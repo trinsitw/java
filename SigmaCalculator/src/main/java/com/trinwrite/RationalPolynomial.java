@@ -5,10 +5,10 @@ import com.sun.istack.internal.NotNull;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
-public class Polynomial {
+public class RationalPolynomial {
     private RationalNumber[] coefficients;
 
-    public Polynomial(@NotNull RationalNumber[] coefficients) {
+    public RationalPolynomial(@NotNull RationalNumber[] coefficients) {
         if (coefficients.length == 0) {
             throw new IllegalArgumentException();
         }
@@ -33,7 +33,7 @@ public class Polynomial {
         return Arrays.copyOf(coefficients, coefficients.length);
     }
 
-    public Polynomial add(Polynomial augend) {
+    public RationalPolynomial add(RationalPolynomial augend) {
 
         RationalNumber[] newCoefficients = new RationalNumber[Math.max(
                 coefficients.length,
@@ -53,7 +53,7 @@ public class Polynomial {
             }
             newCoefficients[i] = thisCoefficient.add(augendCoefficient);
         }
-        return new Polynomial(newCoefficients);
+        return new RationalPolynomial(newCoefficients);
     }
 
     @Override
@@ -73,10 +73,10 @@ public class Polynomial {
 
     @Override
     public boolean equals(Object that) {
-        if (!(that instanceof Polynomial)) {
+        if (!(that instanceof RationalPolynomial)) {
             return false;
         }
-        Polynomial thatPolynomial = (Polynomial) that;
+        RationalPolynomial thatPolynomial = (RationalPolynomial) that;
         if (coefficients.length != thatPolynomial.coefficients().length) {
             return false;
         }

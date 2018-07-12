@@ -7,15 +7,15 @@ public class Main {
         int b = 9;
 	    System.out.println(gcd(a, b));
         System.out.println(new RationalNumber(1,1));
-        System.out.println(new Polynomial(new RationalNumber[]{
+        System.out.println(new RationalPolynomial(new RationalNumber[]{
                 new RationalNumber(3,1),
                 new RationalNumber(1,2),
                 new RationalNumber(3,4)}));
-        System.out.println(new Polynomial(new RationalNumber[]{
+        System.out.println(new RationalPolynomial(new RationalNumber[]{
                 new RationalNumber(3,1),
                 new RationalNumber(0,2),
                 new RationalNumber(3,4)}));
-        System.out.println(new Polynomial(new RationalNumber[]{
+        System.out.println(new RationalPolynomial(new RationalNumber[]{
                 new RationalNumber(0,1),
                 new RationalNumber(0,1),
                 new RationalNumber(0,1)}));
