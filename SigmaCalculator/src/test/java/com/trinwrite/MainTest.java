@@ -20,6 +20,8 @@ public class MainTest {
         RationalNumber r6 = new RationalNumber(2,4);
         assertEquals(r5, r6);
 
-
+        RationalNumber r7 = new RationalNumber(0,1);
+        RationalNumber r8 = new RationalNumber(0,-2);
+        assertEquals(r7, r8);
     }
 }
