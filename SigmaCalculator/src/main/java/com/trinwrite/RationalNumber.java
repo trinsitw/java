@@ -5,7 +5,9 @@ import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
 public class RationalNumber {
     private int numerator;
     private int denominator;
+
     public static final RationalNumber ZERO = new RationalNumber(0,1);
+    public static final RationalNumber ONE = new RationalNumber(1,1);
 
     public RationalNumber(int a, int b) {
         if (b == 0) {
