@@ -87,19 +87,45 @@ public class RationalPolynomial {
 
     @Override
     public String toString() {
-        if (Arrays.asList(coefficients).stream().allMatch(q -> q.equals(RationalNumber.ZERO))) {
+        if (this.equals(RationalPolynomial.ZERO)) {
             return "0";
         }
+        if (coefficients.length == 1) {
+            return coefficients[0].toString();
+        }
         StringBuilder builder = new StringBuilder();
-        for (int i = coefficients.length-1; i >= 0; i--) {
+        for (int i = coefficients.length - 1; i >= 0; i--) {
             if (coefficients[i].equals(RationalNumber.ZERO)) {
                 continue;
             }
-            builder = builder.append(((i!=coefficients.length-1)?" + ":"") + "(" + coefficients[i].toString() + ")" + ((i > 0)?"x":"") + ((i > 1)?"^" + i:""));
+            if (coefficients[i].numerator() < 0) {
+                builder = builder.append("-");
+            } else if (i != coefficients.length -1) {
+                builder = builder.append("+");
+            }
+            if (coefficients[i].equals(RationalNumber.ONE)
+                    || coefficients[i].equals(new RationalNumber(-1,1))) {
+                if (i == 0) {
+                    builder = builder.append("1");
+                }
+            } else  {
+                if (coefficients[i].denominator() == 1) {
+                    builder = builder.append(Math.abs(coefficients[i].numerator()));
+                } else {
+                    builder = builder.append("(" + Math.abs(coefficients[i].numerator())
+                            + "/" + coefficients[i].denominator() + ")");
+                }
+            }
+            if (i > 0) {
+                builder = builder.append("x");
+            }
+            if (i > 1) {
+                builder = builder.append("^" + i);
+            }
         }
         return builder.toString();
     }
-    
+
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof RationalPolynomial)) {

@@ -129,6 +129,7 @@ public class RationalPolynomialTest {
                 RationalNumber.ZERO});
         assertEquals(p1.multiply(RationalPolynomial.ZERO), RationalPolynomial.ZERO);
         assertEquals(p1.multiply(RationalPolynomial.ONE), p1);
+
         RationalPolynomial p2 = new RationalPolynomial(new RationalNumber[] {
                 new RationalNumber(1, 1),
                 new RationalNumber(2, 1),
@@ -143,5 +144,96 @@ public class RationalPolynomialTest {
                 new RationalNumber(6,1)});
         assertEquals(p2.multiply(p3), p4);
 
+        RationalPolynomial p5 = new RationalPolynomial(new RationalNumber[] {
+                new RationalNumber(1, 1),
+                new RationalNumber(-3, 1)});
+        RationalPolynomial p6 = new RationalPolynomial(new RationalNumber[] {
+                new RationalNumber(2, 3),
+                new RationalNumber(0, 1),
+                new RationalNumber(2, 1)});
+        RationalPolynomial p7 = new RationalPolynomial(new RationalNumber[] {
+                new RationalNumber(2, 3),
+                new RationalNumber(-2, 1),
+                new RationalNumber(2, 1),
+                new RationalNumber(-6,1)});
+        assertEquals(p5.multiply(p6), p7);
+    }
+
+    @Test
+    public void toStringTest() {
+        assertEquals(
+                RationalPolynomial.ZERO.toString(),
+                "0");
+        assertEquals(
+                RationalPolynomial.ONE.toString(),
+                "1");
+        assertEquals(
+                new RationalPolynomial(new RationalNumber[]{ new RationalNumber(-1,1)}).toString(),
+                "-1");
+        assertEquals(
+                new RationalPolynomial(new RationalNumber[]{ new RationalNumber(-1,2)}).toString(),
+                "-1/2");
+        assertEquals(
+                new RationalPolynomial(new RationalNumber[]{ new RationalNumber(1,2)}).toString(),
+                "1/2");
+        assertEquals(
+                new RationalPolynomial(new RationalNumber[]{
+                        new RationalNumber(1,2),
+                        new RationalNumber(1,1)}).toString(),
+                "x+(1/2)");
+        assertEquals(
+                new RationalPolynomial(new RationalNumber[]{
+                        new RationalNumber(-1,2),
+                        new RationalNumber(1,1)}).toString(),
+                "x-(1/2)");
+        assertEquals(
+                new RationalPolynomial(new RationalNumber[]{
+                        new RationalNumber(1,2),
+                        new RationalNumber(-1,1)}).toString(),
+                "-x+(1/2)");
+        assertEquals(
+                new RationalPolynomial(new RationalNumber[]{
+                        new RationalNumber(-1,2),
+                        new RationalNumber(2,1)}).toString(),
+                "2x-(1/2)");
+        assertEquals(
+                new RationalPolynomial(new RationalNumber[]{
+                        new RationalNumber(-1,2),
+                        new RationalNumber(-2,1)}).toString(),
+                "-2x-(1/2)");
+        assertEquals(
+                new RationalPolynomial(new RationalNumber[]{
+                        new RationalNumber(-1,2),
+                        new RationalNumber(3,5)}).toString(),
+                "(3/5)x-(1/2)");
+        assertEquals(
+                new RationalPolynomial(new RationalNumber[]{
+                        new RationalNumber(-1,2),
+                        new RationalNumber(3,-5)}).toString(),
+                "-(3/5)x-(1/2)");
+        assertEquals(
+                new RationalPolynomial(new RationalNumber[]{
+                        new RationalNumber(-1,2),
+                        new RationalNumber(3,-5),
+                        new RationalNumber(1,1)}).toString(),
+                "x^2-(3/5)x-(1/2)");
+        assertEquals(
+                new RationalPolynomial(new RationalNumber[]{
+                        new RationalNumber(-1,2),
+                        new RationalNumber(3,1),
+                        new RationalNumber(-1,1)}).toString(),
+                "-x^2+3x-(1/2)");
+        assertEquals(
+                new RationalPolynomial(new RationalNumber[]{
+                        new RationalNumber(-1,2),
+                        new RationalNumber(3,1),
+                        new RationalNumber(2,3)}).toString(),
+                "(2/3)x^2+3x-(1/2)");
+        assertEquals(
+                new RationalPolynomial(new RationalNumber[]{
+                        new RationalNumber(-1,2),
+                        new RationalNumber(3,1),
+                        new RationalNumber(-1,3)}).toString(),
+                "-(1/3)x^2+3x-(1/2)");
     }
 }
