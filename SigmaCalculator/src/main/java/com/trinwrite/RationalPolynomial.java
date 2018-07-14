@@ -2,6 +2,7 @@ package com.trinwrite;
 
 import com.sun.istack.internal.NotNull;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -99,31 +100,39 @@ public class RationalPolynomial {
                 continue;
             }
             if (coefficients[i].numerator() < 0) {
-                builder = builder.append("-");
+                builder.append("-");
             } else if (i != coefficients.length -1) {
-                builder = builder.append("+");
+                builder.append("+");
             }
             if (coefficients[i].equals(RationalNumber.ONE)
                     || coefficients[i].equals(new RationalNumber(-1,1))) {
                 if (i == 0) {
-                    builder = builder.append("1");
+                    builder.append("1");
                 }
             } else  {
                 if (coefficients[i].denominator() == 1) {
-                    builder = builder.append(Math.abs(coefficients[i].numerator()));
+                    builder.append(Math.abs(coefficients[i].numerator()));
                 } else {
-                    builder = builder.append("(" + Math.abs(coefficients[i].numerator())
+                    builder.append("(" + Math.abs(coefficients[i].numerator())
                             + "/" + coefficients[i].denominator() + ")");
                 }
             }
             if (i > 0) {
-                builder = builder.append("x");
+                builder.append("x");
             }
             if (i > 1) {
-                builder = builder.append("^" + i);
+                builder.append("^" + i);
             }
         }
         return builder.toString();
+    }
+
+    public RationalNumber evaluate(RationalNumber x) {
+        RationalNumber p = RationalNumber.ZERO;
+        for (int i = coefficients.length -1; i >= 0; i--) {
+            p = coefficients[i].add(x.multiply(p));
+        }
+        return p;
     }
 
     @Override
@@ -137,5 +146,13 @@ public class RationalPolynomial {
         }
         return IntStream.range(0, coefficients.length)
                 .allMatch(i -> coefficients[i].equals(polynomial.coefficients()[i]));
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.asList(coefficients)
+                .stream()
+                .map(coefficient -> coefficient.hashCode())
+                .reduce(0, (a,b) -> a+b);
     }
 }

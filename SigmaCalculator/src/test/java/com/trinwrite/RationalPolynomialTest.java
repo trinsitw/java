@@ -6,18 +6,13 @@ import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 
 public class RationalPolynomialTest {
 
     @Test
     public void equalsTest() {
-
         assertFalse(RationalPolynomial.ONE.equals(null));
-
-        Arrays.asList(new RationalPolynomial(new RationalNumber[]{
-                RationalNumber.ZERO,
-                RationalNumber.ZERO,
-                RationalNumber.ZERO}).coefficients()).stream().forEach(System.out::println);
         assertEquals(
                 new RationalPolynomial(new RationalNumber[]{
                     RationalNumber.ZERO,
@@ -56,7 +51,21 @@ public class RationalPolynomialTest {
                         RationalNumber.ZERO,
                         RationalNumber.ZERO,
                         RationalNumber.ZERO}));
+        RationalPolynomial p1 = new RationalPolynomial(new RationalNumber[] {
+                new RationalNumber(3,1),
+                new RationalNumber(-3,1),
+                new RationalNumber(2,1),
+                new RationalNumber(5,1)});
+        RationalPolynomial p2 = new RationalPolynomial(new RationalNumber[] {
+                new RationalNumber(3,1),
+                new RationalNumber(-3,1),
+                new RationalNumber(2,1),
+                new RationalNumber(5,1),
+                RationalNumber.ZERO,
+                RationalNumber.ZERO});
+        assertEquals(p1.hashCode(), p2.hashCode());
 
+        assertNotEquals(p1.hashCode(), RationalPolynomial.ONE.hashCode());
     }
 
     @Test
@@ -115,7 +124,6 @@ public class RationalPolynomialTest {
                 new RationalNumber(3, 1),
                 RationalNumber.ZERO});
         assertEquals(p1.multiply(RationalNumber.ZERO), RationalPolynomial.ZERO);
-        assertEquals(p1.multiply(RationalNumber.ONE), p1);
     }
 
     @Test
@@ -157,6 +165,18 @@ public class RationalPolynomialTest {
                 new RationalNumber(2, 1),
                 new RationalNumber(-6,1)});
         assertEquals(p5.multiply(p6), p7);
+    }
+
+    @Test
+    public void evaluateTest() {
+        RationalPolynomial p1 = new RationalPolynomial(new RationalNumber[] {
+                new RationalNumber(1, 1),
+                new RationalNumber(2, 1),
+                new RationalNumber(3, 1),
+                new RationalNumber(4,1)});
+        assertEquals(p1.evaluate(RationalNumber.ONE), new RationalNumber(10,1));
+        assertEquals(p1.evaluate(new RationalNumber(2, 1)), new RationalNumber(49,1));
+        assertEquals(p1.evaluate(new RationalNumber(-1, 1)), new RationalNumber(-2,1));
     }
 
     @Test
