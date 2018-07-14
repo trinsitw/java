@@ -135,6 +135,12 @@ public class RationalPolynomial {
         return p;
     }
 
+    public RationalNumber evaluate2(RationalNumber x) {
+        return IntStream.range(0, coefficients.length)
+                .mapToObj(i -> coefficients[i].multiply(x.pow(i)))
+                .reduce(RationalNumber.ZERO, (a,b)-> a.add(b));
+    }
+
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof RationalPolynomial)) {

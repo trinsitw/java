@@ -180,6 +180,18 @@ public class RationalPolynomialTest {
     }
 
     @Test
+    public void evaluate2Test() {
+        RationalPolynomial p1 = new RationalPolynomial(new RationalNumber[] {
+                new RationalNumber(1, 1),
+                new RationalNumber(2, 1),
+                new RationalNumber(3, 1),
+                new RationalNumber(4,1)});
+        assertEquals(p1.evaluate2(RationalNumber.ONE), new RationalNumber(10,1));
+        assertEquals(p1.evaluate2(new RationalNumber(2, 1)), new RationalNumber(49,1));
+        assertEquals(p1.evaluate2(new RationalNumber(-1, 1)), new RationalNumber(-2,1));
+    }
+
+    @Test
     public void toStringTest() {
         assertEquals(
                 RationalPolynomial.ZERO.toString(),

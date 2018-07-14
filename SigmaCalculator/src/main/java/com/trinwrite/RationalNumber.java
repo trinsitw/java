@@ -2,6 +2,8 @@ package com.trinwrite;
 
 import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
 
+import java.util.stream.IntStream;
+
 public class RationalNumber {
     private int numerator;
     private int denominator;
@@ -47,6 +49,13 @@ public class RationalNumber {
         return new RationalNumber(
                 numerator*multiplicand.numerator(),
                 denominator*multiplicand.denominator());
+    }
+
+    public RationalNumber pow(int exponent) {
+        if (exponent < 0) throw new IllegalArgumentException();
+        return IntStream.range(0, exponent)
+                .mapToObj(i -> this)
+                .reduce(RationalNumber.ONE, (a,b) -> a.multiply(b));
     }
 
     public RationalNumber divide(RationalNumber divisor) {

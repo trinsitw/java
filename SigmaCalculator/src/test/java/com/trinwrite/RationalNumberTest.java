@@ -78,6 +78,15 @@ public class RationalNumberTest {
     }
 
     @Test
+    public void powTest() {
+        RationalNumber r1 = new RationalNumber(1,2);
+        assertEquals(r1.pow(0), RationalNumber.ONE);
+        assertEquals(r1.pow(1), r1);
+        assertEquals(r1.pow(2), r1.multiply(r1));
+        assertEquals(r1.pow(3), r1.multiply(r1).multiply(r1));
+    }
+
+    @Test
     public void divideTest() {
         assertEquals(
                 new RationalNumber(3,1).divide(new RationalNumber(5,1)),
