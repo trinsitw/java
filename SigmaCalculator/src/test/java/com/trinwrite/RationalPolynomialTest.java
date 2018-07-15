@@ -266,20 +266,20 @@ public class RationalPolynomialTest {
 
     @Test
     public void divideRationalPolynomialTest() {
-        RationalPolynomial p1 = new RationalPolynomial(new RationalNumber[] {
+        RationalPolynomial p1 = new RationalPolynomial(
                 new RationalNumber(-1,1),
                 new RationalNumber(1,1),
                 new RationalNumber(2,1),
-                new RationalNumber(3,1)});
-        RationalPolynomial p2 = new RationalPolynomial(new RationalNumber[] {
+                new RationalNumber(3,1));
+        RationalPolynomial p2 = new RationalPolynomial(
                 new RationalNumber(2,1),
-                new RationalNumber(2,1)});
-        RationalPolynomial p3 = new RationalPolynomial(new RationalNumber[] {
+                new RationalNumber(2,1));
+        RationalPolynomial p3 = new RationalPolynomial(
                 new RationalNumber(1,1),
                 new RationalNumber(-1,2),
-                new RationalNumber(3,2)});
-        RationalPolynomial p4 = new RationalPolynomial(new RationalNumber[] {
-                new RationalNumber(-3,1)});
+                new RationalNumber(3,2));
+        RationalPolynomial p4 = new RationalPolynomial(
+                new RationalNumber(-3,1));
         RationalPolynomial[] result = p1.divide(p2);
         assertEquals(result[0], p3);
         assertEquals(result[1], p4);
