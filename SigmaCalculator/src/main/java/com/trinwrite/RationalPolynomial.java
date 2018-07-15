@@ -11,11 +11,11 @@ public class RationalPolynomial {
 
     private RationalNumber[] coefficients;
 
-    public static final RationalPolynomial ZERO = new RationalPolynomial(new RationalNumber[]{ RationalNumber.ZERO });
-    public static final RationalPolynomial ONE = new RationalPolynomial(new RationalNumber[]{ RationalNumber.ONE });
-    public static final RationalPolynomial X = new RationalPolynomial(new RationalNumber[]{RationalNumber.ZERO, RationalNumber.ONE });
+    public static final RationalPolynomial ZERO = new RationalPolynomial(RationalNumber.ZERO);
+    public static final RationalPolynomial ONE = new RationalPolynomial(RationalNumber.ONE);
+    public static final RationalPolynomial X = new RationalPolynomial(RationalNumber.ZERO, RationalNumber.ONE);
 
-    public RationalPolynomial(@NotNull RationalNumber[] coefficients) {
+    public RationalPolynomial(@NotNull RationalNumber... coefficients) {
         if (coefficients.length == 0) {
             throw new IllegalArgumentException();
         }
@@ -36,6 +36,7 @@ public class RationalPolynomial {
             this.coefficients = newCoefficients;
         }
     }
+
     public RationalNumber[] coefficients() {
         return Arrays.copyOf(coefficients, coefficients.length);
     }
