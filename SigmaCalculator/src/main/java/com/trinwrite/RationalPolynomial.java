@@ -13,6 +13,7 @@ public class RationalPolynomial {
 
     public static final RationalPolynomial ZERO = new RationalPolynomial(new RationalNumber[]{ RationalNumber.ZERO });
     public static final RationalPolynomial ONE = new RationalPolynomial(new RationalNumber[]{ RationalNumber.ONE });
+    public static final RationalPolynomial X = new RationalPolynomial(new RationalNumber[]{RationalNumber.ZERO, RationalNumber.ONE });
 
     public RationalPolynomial(@NotNull RationalNumber[] coefficients) {
         if (coefficients.length == 0) {
@@ -39,8 +40,15 @@ public class RationalPolynomial {
         return Arrays.copyOf(coefficients, coefficients.length);
     }
 
-    public RationalPolynomial add(RationalPolynomial augend) {
+    public int degree() {
+        return coefficients.length - 1;
+    }
 
+    public RationalNumber leadingCoefficient() {
+        return coefficients[coefficients.length -1];
+    }
+
+    public RationalPolynomial add(RationalPolynomial augend) {
         RationalNumber[] newCoefficients = new RationalNumber[Math.max(
                 coefficients.length,
                 augend.coefficients().length)];
@@ -60,6 +68,10 @@ public class RationalPolynomial {
             newCoefficients[i] = thisCoefficient.add(augendCoefficient);
         }
         return new RationalPolynomial(newCoefficients);
+    }
+
+    public RationalPolynomial subtract(RationalPolynomial subtrahend) {
+        return this.add(subtrahend.multiply(new RationalNumber(-1,1)));
     }
 
     public RationalPolynomial multiply(RationalNumber multiplicand) {
@@ -84,6 +96,34 @@ public class RationalPolynomial {
             }
         }
         return new RationalPolynomial(productCoefficients);
+    }
+
+    public RationalPolynomial pow(int exponent) {
+        if (exponent < 0) throw new IllegalArgumentException();
+        return IntStream.range(0, exponent)
+                .mapToObj(i -> this)
+                .reduce(RationalPolynomial.ONE, (a, b) -> a.multiply(b));
+    }
+
+    public RationalPolynomial divide(RationalNumber divisor) {
+        return this.multiply(RationalNumber.ONE.divide(divisor));
+    }
+
+    public RationalPolynomial[] divide(RationalPolynomial divisor) {
+        if (divisor.degree() == 0) {
+            return new RationalPolynomial[] {
+                    this.divide(divisor.leadingCoefficient()),
+                    RationalPolynomial.ZERO};
+        }
+        RationalPolynomial quotient = RationalPolynomial.ZERO;
+        RationalPolynomial remainder = new RationalPolynomial(this.coefficients);
+        while (remainder.degree() >= divisor.degree()) {
+            RationalPolynomial s = RationalPolynomial.X.pow(remainder.degree() - divisor.degree())
+                    .multiply(remainder.leadingCoefficient().divide(divisor.leadingCoefficient()));
+            quotient = quotient.add(s);
+            remainder = remainder.subtract(s.multiply(divisor));
+        }
+        return new RationalPolynomial[]{ quotient, remainder};
     }
 
     @Override
