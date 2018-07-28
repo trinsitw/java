@@ -127,6 +127,20 @@ public class RationalPolynomial {
         return new RationalPolynomial[]{ quotient, remainder};
     }
 
+    public RationalNumber evaluate(RationalNumber x) {
+        RationalNumber p = RationalNumber.ZERO;
+        for (int i = coefficients.length -1; i >= 0; i--) {
+            p = coefficients[i].add(x.multiply(p));
+        }
+        return p;
+    }
+
+    public RationalNumber evaluate2(RationalNumber x) {
+        return IntStream.range(0, coefficients.length)
+                .mapToObj(i -> coefficients[i].multiply(x.pow(i)))
+                .reduce(RationalNumber.ZERO, (a,b)-> a.add(b));
+    }
+
     @Override
     public String toString() {
         if (this.equals(RationalPolynomial.ZERO)) {
@@ -166,20 +180,6 @@ public class RationalPolynomial {
             }
         }
         return builder.toString();
-    }
-
-    public RationalNumber evaluate(RationalNumber x) {
-        RationalNumber p = RationalNumber.ZERO;
-        for (int i = coefficients.length -1; i >= 0; i--) {
-            p = coefficients[i].add(x.multiply(p));
-        }
-        return p;
-    }
-
-    public RationalNumber evaluate2(RationalNumber x) {
-        return IntStream.range(0, coefficients.length)
-                .mapToObj(i -> coefficients[i].multiply(x.pow(i)))
-                .reduce(RationalNumber.ZERO, (a,b)-> a.add(b));
     }
 
     @Override

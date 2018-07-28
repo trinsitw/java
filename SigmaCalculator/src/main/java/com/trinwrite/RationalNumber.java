@@ -11,6 +11,10 @@ public class RationalNumber {
     public static final RationalNumber ZERO = new RationalNumber(0,1);
     public static final RationalNumber ONE = new RationalNumber(1,1);
 
+    public RationalNumber(int a) {
+        this(a, 1);
+    }
+
     public RationalNumber(int a, int b) {
         if (b == 0) {
             throw new ArithmeticException();
