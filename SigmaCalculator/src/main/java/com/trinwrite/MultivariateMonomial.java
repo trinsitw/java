@@ -5,7 +5,7 @@ import com.sun.istack.internal.NotNull;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MultivariateMonomial { //implements Comparable<MultivariateMonomial> {
+public class MultivariateMonomial implements Comparable<MultivariateMonomial> {
 
     public final static MultivariateMonomial ZERO = new MultivariateMonomial(RationalNumber.ZERO);
     public final static MultivariateMonomial ONE = new MultivariateMonomial(RationalNumber.ONE);
@@ -24,7 +24,7 @@ public class MultivariateMonomial { //implements Comparable<MultivariateMonomial
         }
         this.coefficient = coefficient;
         this.indeterminateExponentList = indeterminateExponentList.stream()
-                //.sorted()
+                .sorted()
                 .collect(Collectors.toList());
     }
 
@@ -93,7 +93,7 @@ public class MultivariateMonomial { //implements Comparable<MultivariateMonomial
         return Objects.hash(coefficient, new HashSet<>(indeterminateExponentList));
     }
 
-    /*@Override
+    @Override
     public int compareTo(MultivariateMonomial that) {
         return Integer.compare(
                 Integer.valueOf(that.indeterminateExponentList.stream()
@@ -102,5 +102,5 @@ public class MultivariateMonomial { //implements Comparable<MultivariateMonomial
                 Integer.valueOf(this.indeterminateExponentList.stream()
                         .map(monomial -> monomial.exponent())
                         .reduce(0, (a,b)->a+b)));
-    }*/
+    }
 }

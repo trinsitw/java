@@ -29,7 +29,7 @@ public class MultivariatePolynomial {
                 .stream()
                 .map(entry -> new MultivariateMonomial(entry.getValue(), entry.getKey()))
                 .filter(monomial -> !monomial.equals(MultivariateMonomial.ZERO))
-               // .sorted()
+                .sorted()
                 .collect(Collectors.toList());
         if (this.monomialList.size() == 0) {
             this.monomialList.add(MultivariateMonomial.ZERO);

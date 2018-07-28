@@ -2,7 +2,7 @@ package com.trinwrite;
 
 import java.util.Objects;
 
-public class IndeterminateExponent { //implements Comparable<IndeterminateExponent> {
+public class IndeterminateExponent implements Comparable<IndeterminateExponent> {
     private char indeterminate;
     private int exponent;
 
@@ -24,11 +24,11 @@ public class IndeterminateExponent { //implements Comparable<IndeterminateExpone
     public int exponent() {
         return exponent;
     }
-/*
+
     @Override
     public int compareTo(IndeterminateExponent that) {
         return Character.compare(indeterminate, that.indeterminate);
-    }*/
+    }
 
     @Override
     public String toString() {

@@ -1,18 +1,15 @@
 package com.trinwrite;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AlternativeToFaulhaberFormula {
 
     private static Map<Integer, MultivariatePolynomial> sumOfKthPowersOfFirstNPositiveIntegers = new HashMap<>();
 
     public static void main(String[] argv) {
-        System.out.println(sumOfKthPowersOfFirstNPositiveIntegers(0));
-        System.out.println(sumOfKthPowersOfFirstNPositiveIntegers(1));
-        System.out.println(sumOfKthPowersOfFirstNPositiveIntegers(2));
+        for (int k = 1; k <= 4; k++) {
+            System.out.println("\\Sigma_{i^" + k + "} = " + sumOfKthPowersOfFirstNPositiveIntegers(k));
+        }
     }
 
     public static MultivariatePolynomial sumOfIndexedMonomial(MultivariateMonomial monomial) {
@@ -57,7 +54,7 @@ public class AlternativeToFaulhaberFormula {
             sumOfKthPowersOfFirstNPositiveIntegers.put(k, formula);
             return formula;
         } else if (k == 2) {
-            MultivariatePolynomial formula = new MultivariatePolynomial(
+            MultivariatePolynomial initialFormula = new MultivariatePolynomial(
                     new MultivariateMonomial(new RationalNumber(2), 'i', 1),
                     new MultivariateMonomial(new RationalNumber(-1)))
                     .multiply(
@@ -73,10 +70,59 @@ public class AlternativeToFaulhaberFormula {
 
                     )
                     ;
+            MultivariateMonomial kthDegreeMonomial = initialFormula.monomialList()
+                    .stream()
+                    .filter(monomial -> monomial.indeterminateExponentList()
+                            .stream()
+                            .anyMatch(ie -> ie.indeterminate() == 'i' && ie.exponent() == k)).findFirst().get();
+            List<MultivariateMonomial> prunedMonomialList = new ArrayList<>(initialFormula.monomialList());
+            prunedMonomialList.remove(kthDegreeMonomial);
+            MultivariatePolynomial formula = sumOfIndexedPolynomial(new MultivariatePolynomial(prunedMonomialList)).multiply(
+                    new MultivariateMonomial(new RationalNumber(1).divide(
+                            RationalNumber.ONE.add(kthDegreeMonomial.coefficient().multiply(new RationalNumber(-1)))))
+            );
+            sumOfKthPowersOfFirstNPositiveIntegers.put(k, formula);
+            return formula;
+        } else {
+            MultivariatePolynomial initialFormula = new MultivariatePolynomial(
+                    new MultivariateMonomial(new RationalNumber(2), 'i', 1),
+                    new MultivariateMonomial(new RationalNumber(-1)))
+                    .multiply(
+                            sumOfIndexedMonomial(
+                                    new MultivariateMonomial(new RationalNumber(1), 'i', k-2)
+
+
+                            ).subtract(
+                                    sumOfIndexedMonomial(
+                                            new MultivariateMonomial(new RationalNumber(1), 'i', k-2)
+
+                                    ).compose('n',
+                                            new MultivariatePolynomial(
+                                                    new MultivariateMonomial(new RationalNumber(1), 'i', 1),
+                                                    new MultivariateMonomial(new RationalNumber(-1))
+
+                                            )
+                                    )
+
+
+                            )
+
+                    )
+                    ;
+            MultivariateMonomial kthDegreeMonomial = initialFormula.monomialList()
+                    .stream()
+                    .filter(monomial -> monomial.indeterminateExponentList()
+                            .stream()
+                            .anyMatch(ie -> ie.indeterminate() == 'i' && ie.exponent() == k)).findFirst().get();
+            List<MultivariateMonomial> prunedMonomialList = new ArrayList<>(initialFormula.monomialList());
+            prunedMonomialList.remove(kthDegreeMonomial);
+            MultivariatePolynomial formula = sumOfIndexedPolynomial(new MultivariatePolynomial(prunedMonomialList)).multiply(
+                    new MultivariateMonomial(new RationalNumber(1).divide(
+                            RationalNumber.ONE.add(kthDegreeMonomial.coefficient().multiply(new RationalNumber(-1)))))
+            );
             sumOfKthPowersOfFirstNPositiveIntegers.put(k, formula);
             return formula;
         }
-        throw new UnsupportedOperationException();
 
     }
 }
