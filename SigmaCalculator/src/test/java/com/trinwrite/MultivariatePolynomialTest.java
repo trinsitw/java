@@ -9,7 +9,7 @@ import static junit.framework.TestCase.assertEquals;
 public class MultivariatePolynomialTest {
     @Test
     public void constructorTest() {
-        MultivariatePolynomial mp1 = new MultivariatePolynomial(Arrays.asList(
+        MultivariatePolynomial mp1 = new MultivariatePolynomial(
                 new MultivariateMonomial(new RationalNumber(1), 'i', 2),
                 new MultivariateMonomial(new RationalNumber(2), 'i', 2),
                 new MultivariateMonomial(new RationalNumber(3), 'i', 2),
@@ -17,30 +17,30 @@ public class MultivariatePolynomialTest {
                 new MultivariateMonomial(new RationalNumber(5), 'n', 4),
                 new MultivariateMonomial(new RationalNumber(6), 'n', 3, 'i', 2),
                 new MultivariateMonomial(new RationalNumber(7), 'n', 3, 'i', 3)
-        ));
+        );
         System.out.println(mp1);
 
     }
 
     @Test
     public void addMonomialTest() {
-        MultivariatePolynomial mp1 = new MultivariatePolynomial(Arrays.asList(
+        MultivariatePolynomial mp1 = new MultivariatePolynomial(
                 new MultivariateMonomial(new RationalNumber(1), 'i', 2),
                 new MultivariateMonomial(new RationalNumber(2), 'i', 2),
                 new MultivariateMonomial(new RationalNumber(3), 'i', 2),
-                new MultivariateMonomial(new RationalNumber(4), 'n', 3)));
+                new MultivariateMonomial(new RationalNumber(4), 'n', 3));
         MultivariateMonomial mm2 = new MultivariateMonomial(new RationalNumber(1), 'i', 2);
-        MultivariatePolynomial mp3 = new MultivariatePolynomial(Arrays.asList(
+        MultivariatePolynomial mp3 = new MultivariatePolynomial(
                 new MultivariateMonomial(new RationalNumber(7), 'i', 2),
-                new MultivariateMonomial(new RationalNumber(4), 'n', 3)));
+                new MultivariateMonomial(new RationalNumber(4), 'n', 3));
         System.out.println("mp1: " + mp1);
         System.out.println("mm2: " + mm2);
         System.out.println("mp3: " + mp3);
         System.out.println("mp1.add(mm2): " + mp1.add(mm2));
         assertEquals(mp1.add(mm2), mp3);
 
-        MultivariatePolynomial mp4 = new MultivariatePolynomial(Arrays.asList(
-                new MultivariateMonomial(new RationalNumber(1), 'i', 2)));
+        MultivariatePolynomial mp4 = new MultivariatePolynomial(
+                new MultivariateMonomial(new RationalNumber(1), 'i', 2));
         MultivariateMonomial mm5 = new MultivariateMonomial(new RationalNumber(-1), 'i', 2);
         MultivariatePolynomial mp6 = MultivariatePolynomial.ZERO;
         System.out.println("mp4: " + mp4);
@@ -56,23 +56,23 @@ public class MultivariatePolynomialTest {
 
     @Test
     public void addPolynomialTest() {
-        MultivariatePolynomial mp1 = new MultivariatePolynomial(Arrays.asList(
+        MultivariatePolynomial mp1 = new MultivariatePolynomial(
                 new MultivariateMonomial(new RationalNumber(1), 'i', 1),
                 new MultivariateMonomial(new RationalNumber(2), 'i', 2),
                 new MultivariateMonomial(new RationalNumber(3), 'i', 3),
-                new MultivariateMonomial(new RationalNumber(4), 'n', 4)));
-        MultivariatePolynomial mp2 = new MultivariatePolynomial(Arrays.asList(
+                new MultivariateMonomial(new RationalNumber(4), 'n', 4));
+        MultivariatePolynomial mp2 = new MultivariatePolynomial(
                 new MultivariateMonomial(new RationalNumber(5), 'i', 2),
                 new MultivariateMonomial(new RationalNumber(6), 'i', 3),
                 new MultivariateMonomial(new RationalNumber(7), 'i', 4),
-                new MultivariateMonomial(new RationalNumber(8), 'n', 5)));
-        MultivariatePolynomial mp3 = new MultivariatePolynomial(Arrays.asList(
+                new MultivariateMonomial(new RationalNumber(8), 'n', 5));
+        MultivariatePolynomial mp3 = new MultivariatePolynomial(
                 new MultivariateMonomial(new RationalNumber(1), 'i', 1),
                 new MultivariateMonomial(new RationalNumber(7), 'i', 2),
                 new MultivariateMonomial(new RationalNumber(9), 'i', 3),
                 new MultivariateMonomial(new RationalNumber(7), 'i', 4),
                 new MultivariateMonomial(new RationalNumber(4), 'n', 4),
-                new MultivariateMonomial(new RationalNumber(8), 'n', 5)));
+                new MultivariateMonomial(new RationalNumber(8), 'n', 5));
         System.out.println("mp1: " + mp1);
         System.out.println("mp2: " + mp2);
         System.out.println("mp3: " + mp3);
@@ -83,17 +83,17 @@ public class MultivariatePolynomialTest {
         System.out.println("mp3.add(ZERO: " + mp3.add(MultivariatePolynomial.ZERO));
         assertEquals(mp3, mp3.add(MultivariatePolynomial.ZERO));
 
-        MultivariatePolynomial mp4 = new MultivariatePolynomial(Arrays.asList(
+        MultivariatePolynomial mp4 = new MultivariatePolynomial(
                 new MultivariateMonomial(new RationalNumber(1), 'i', 1),
                 new MultivariateMonomial(new RationalNumber(2), 'i', 2),
                 new MultivariateMonomial(new RationalNumber(3), 'i', 3),
-                new MultivariateMonomial(new RationalNumber(4), 'n', 4)));
+                new MultivariateMonomial(new RationalNumber(4), 'n', 4));
 
-        MultivariatePolynomial mp5 = new MultivariatePolynomial(Arrays.asList(
+        MultivariatePolynomial mp5 = new MultivariatePolynomial(
                 new MultivariateMonomial(new RationalNumber(-1), 'i', 1),
                 new MultivariateMonomial(new RationalNumber(-2), 'i', 2),
                 new MultivariateMonomial(new RationalNumber(-3), 'i', 3),
-                new MultivariateMonomial(new RationalNumber(-4), 'n', 4)));
+                new MultivariateMonomial(new RationalNumber(-4), 'n', 4));
         System.out.println("mp4: " + mp4);
         System.out.println("mp5: " + mp5);
         System.out.println("mp4.add(mp5): " + mp4.add(mp5));
@@ -101,18 +101,64 @@ public class MultivariatePolynomialTest {
     }
 
     @Test
+    public void subtractMonomialTest() {
+        MultivariatePolynomial mp1 = new MultivariatePolynomial(
+                new MultivariateMonomial(new RationalNumber(1), 'i', 1),
+                new MultivariateMonomial(new RationalNumber(2), 'i', 2),
+                new MultivariateMonomial(new RationalNumber(3), 'i', 3),
+                new MultivariateMonomial(new RationalNumber(4), 'n', 4));
+        MultivariateMonomial mm2 = new MultivariateMonomial(new RationalNumber(3), 'i', 2);
+        System.out.println("mp1: " + mp1);
+        System.out.println("mm2: " + mm2);
+        MultivariatePolynomial mp3 = new MultivariatePolynomial(
+                new MultivariateMonomial(new RationalNumber(1), 'i', 1),
+                new MultivariateMonomial(new RationalNumber(-1), 'i', 2),
+                new MultivariateMonomial(new RationalNumber(3), 'i', 3),
+                new MultivariateMonomial(new RationalNumber(4), 'n', 4));
+        System.out.println("mp3: " + mp3);
+        assertEquals(mp1.subtract(mm2), mp3);
+    }
+
+    @Test
+    public void subtractPolynomialTest() {
+        MultivariatePolynomial mp1 = new MultivariatePolynomial(
+                new MultivariateMonomial(new RationalNumber(1), 'i', 1),
+                new MultivariateMonomial(new RationalNumber(2), 'i', 2),
+                new MultivariateMonomial(new RationalNumber(3), 'i', 3),
+                new MultivariateMonomial(new RationalNumber(4), 'n', 4),
+                new MultivariateMonomial(new RationalNumber(5), 'n', 5));
+
+        MultivariatePolynomial mp2 = new MultivariatePolynomial(
+                new MultivariateMonomial(new RationalNumber(5), 'i', 1),
+                new MultivariateMonomial(new RationalNumber(4), 'i', 2),
+                new MultivariateMonomial(new RationalNumber(3), 'i', 3),
+                new MultivariateMonomial(new RationalNumber(2), 'n', 4),
+                new MultivariateMonomial(new RationalNumber(1), 'n', 5));
+
+        MultivariatePolynomial mp3 = new MultivariatePolynomial(
+                new MultivariateMonomial(new RationalNumber(-4), 'i', 1),
+                new MultivariateMonomial(new RationalNumber(-2), 'i', 2),
+                new MultivariateMonomial(new RationalNumber(2), 'n', 4),
+                new MultivariateMonomial(new RationalNumber(4), 'n', 5));
+        System.out.println("mp1: " + mp1);
+        System.out.println("mp2: " + mp2);
+        System.out.println("mp3: " + mp3);
+        assertEquals(mp1.subtract(mp2), mp3);
+    }
+
+    @Test
     public void multiplyMonomialTest() {
-        MultivariatePolynomial mp1 = new MultivariatePolynomial(Arrays.asList(
+        MultivariatePolynomial mp1 = new MultivariatePolynomial(
                 new MultivariateMonomial(new RationalNumber(1), 'i', 1),
                 new MultivariateMonomial(new RationalNumber(2), 'i', 2),
                 new MultivariateMonomial(new RationalNumber(3), 'n', 3),
-                new MultivariateMonomial(new RationalNumber(4), 'n', 4)));
+                new MultivariateMonomial(new RationalNumber(4), 'n', 4));
         MultivariateMonomial mm2 = new MultivariateMonomial(new RationalNumber(2), 'i', 3);
-        MultivariatePolynomial mp3 = new MultivariatePolynomial(Arrays.asList(
+        MultivariatePolynomial mp3 = new MultivariatePolynomial(
                 new MultivariateMonomial(new RationalNumber(2), 'i', 4),
                 new MultivariateMonomial(new RationalNumber(4), 'i', 5),
                 new MultivariateMonomial(new RationalNumber(6), 'n', 3, 'i', 3),
-                new MultivariateMonomial(new RationalNumber(8), 'n', 4, 'i', 3)));
+                new MultivariateMonomial(new RationalNumber(8), 'n', 4, 'i', 3));
         System.out.println("mp1: " + mp1);
         System.out.println("mm2: " + mm2);
         System.out.println("mp3: " + mp3);
@@ -141,14 +187,14 @@ public class MultivariatePolynomialTest {
 
     @Test
     public void multiplyPolynomialTest() {
-        MultivariatePolynomial mp1 = new MultivariatePolynomial(Arrays.asList(
+        MultivariatePolynomial mp1 = new MultivariatePolynomial(
                 new MultivariateMonomial(new RationalNumber(2), 'i', 1),
-                new MultivariateMonomial(new RationalNumber(3), 'n', 2)));
+                new MultivariateMonomial(new RationalNumber(3), 'n', 2));
 
-        MultivariatePolynomial mp2 = new MultivariatePolynomial(Arrays.asList(
+        MultivariatePolynomial mp2 = new MultivariatePolynomial(
                 new MultivariateMonomial(new RationalNumber(4), 'i', 2),
                 new MultivariateMonomial(new RationalNumber(12), 'n', 2, 'i', 1),
-                new MultivariateMonomial(new RationalNumber(9), 'n', 4)));
+                new MultivariateMonomial(new RationalNumber(9), 'n', 4));
 
         System.out.println("mp1: " + mp1);
         System.out.println("mp1.multiply(mp1): " + mp1.multiply(mp1));
@@ -158,9 +204,9 @@ public class MultivariatePolynomialTest {
 
     @Test
     public void powTest() {
-        MultivariatePolynomial mp1 = new MultivariatePolynomial(Arrays.asList(
+        MultivariatePolynomial mp1 = new MultivariatePolynomial(
                 new MultivariateMonomial(new RationalNumber(2), 'i', 1),
-                new MultivariateMonomial(new RationalNumber(3), 'n', 2)));
+                new MultivariateMonomial(new RationalNumber(3), 'n', 2));
         System.out.println("mp1: " + mp1);
         System.out.println("mp1.pow(1): " + mp1.pow(1));
         assertEquals(mp1.pow(1), mp1);
@@ -177,39 +223,36 @@ public class MultivariatePolynomialTest {
     @Test
     public void composeTest() {
         MultivariatePolynomial mp1 = new MultivariatePolynomial(
-                Arrays.asList(new MultivariateMonomial(new RationalNumber(1,2), 'n', 1)))
-                .multiply(new MultivariatePolynomial(Arrays.asList(
+                    new MultivariateMonomial(new RationalNumber(1,2), 'n', 1))
+                .multiply(new MultivariatePolynomial(
                         new MultivariateMonomial(RationalNumber.ONE, 'n', 1),
-                        MultivariateMonomial.ONE
-                )
-                ));
+                        MultivariateMonomial.ONE));
         System.out.println("mp1: " + mp1);
 
         MultivariatePolynomial mp2 = new MultivariatePolynomial(
-                Arrays.asList(
-                        new MultivariateMonomial(RationalNumber.ONE, 'i', 1),
-                        new MultivariateMonomial(new RationalNumber(-1))));
+                new MultivariateMonomial(RationalNumber.ONE, 'i', 1),
+                new MultivariateMonomial(new RationalNumber(-1)));
         System.out.println("mp2: " + mp2);
 
-        MultivariatePolynomial mp3 = new MultivariatePolynomial(Arrays.asList(
+        MultivariatePolynomial mp3 = new MultivariatePolynomial(
                 new MultivariateMonomial(new RationalNumber(1,2), 'i', 2),
-                new MultivariateMonomial(new RationalNumber(-1,2), 'i', 1)));
+                new MultivariateMonomial(new RationalNumber(-1,2), 'i', 1));
         System.out.println("mp3: " + mp3);
         System.out.println("mp1.compose('n', mp2): " + mp1.compose('n', mp2));
         assertEquals(mp1.compose('n', mp2), mp3);
 
-        MultivariatePolynomial mp4 = new MultivariatePolynomial(Arrays.asList(
+        MultivariatePolynomial mp4 = new MultivariatePolynomial(
                 new MultivariateMonomial(RationalNumber.ONE, 'x', 2),
                 new MultivariateMonomial(new RationalNumber(2), 'x', 1),
-                MultivariateMonomial.ONE));
+                MultivariateMonomial.ONE);
         System.out.println("mp4: " + mp4);
-        MultivariatePolynomial mp5 = new MultivariatePolynomial(Arrays.asList(
-                new MultivariateMonomial(new RationalNumber(2), 'x', 1)));
+        MultivariatePolynomial mp5 = new MultivariatePolynomial(
+                new MultivariateMonomial(new RationalNumber(2), 'x', 1));
         System.out.println("mp5: " + mp5);
-        MultivariatePolynomial mp6 = new MultivariatePolynomial(Arrays.asList(
+        MultivariatePolynomial mp6 = new MultivariatePolynomial(
                 new MultivariateMonomial(new RationalNumber(4), 'x', 2),
                 new MultivariateMonomial(new RationalNumber(4), 'x', 1),
-                MultivariateMonomial.ONE));
+                MultivariateMonomial.ONE);
         System.out.println("mp6: " + mp6);
 
         System.out.println("mp4.compose('x', mp5): " + mp4.compose('x', mp5));
@@ -218,10 +261,10 @@ public class MultivariatePolynomialTest {
 
     @Test
     public void evaluateTest() {
-        MultivariatePolynomial mp1 = new MultivariatePolynomial(Arrays.asList(
+        MultivariatePolynomial mp1 = new MultivariatePolynomial(
                 new MultivariateMonomial(RationalNumber.ONE, 'x', 2),
                 new MultivariateMonomial(new RationalNumber(2), 'x', 1),
-                MultivariateMonomial.ONE));
+                MultivariateMonomial.ONE);
         System.out.println(mp1);
         System.out.println("mp1.evaluate(3): " + mp1.evaluate(new RationalNumber(3)));
         assertEquals(mp1.evaluate(new RationalNumber(3)), new RationalNumber(16));
@@ -229,11 +272,11 @@ public class MultivariatePolynomialTest {
         System.out.println("mp1.evaluate(-1): " + mp1.evaluate(new RationalNumber(-2)));
         assertEquals(mp1.evaluate(new RationalNumber(-2)), RationalNumber.ONE);
 
-        MultivariatePolynomial mp2 = new MultivariatePolynomial(Arrays.asList(
+        MultivariatePolynomial mp2 = new MultivariatePolynomial(
                 new MultivariateMonomial(RationalNumber.ONE, 'x', 2),
                 new MultivariateMonomial(new RationalNumber(2), 'x', 1),
                 new MultivariateMonomial(new RationalNumber(2), 'x', 1),
-                MultivariateMonomial.ONE));
+                MultivariateMonomial.ONE);
         System.out.println("mp2: " + mp2);
         System.out.println("mp2.evaluate(RationalNumber.ONE): " + mp2.evaluate(RationalNumber.ONE));
         assertEquals(mp2.evaluate(RationalNumber.ONE), new RationalNumber(6));

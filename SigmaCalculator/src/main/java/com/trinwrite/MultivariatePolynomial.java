@@ -1,5 +1,6 @@
 package com.trinwrite;
 
+import com.sun.istack.internal.NotNull;
 import com.sun.org.apache.xpath.internal.operations.Mult;
 
 import java.util.*;
@@ -8,13 +9,16 @@ import java.util.stream.IntStream;
 
 public class MultivariatePolynomial {
 
-    public final static MultivariatePolynomial ZERO = new MultivariatePolynomial(
-            Arrays.asList(MultivariateMonomial.ZERO));
+    public final static MultivariatePolynomial ZERO = new MultivariatePolynomial(MultivariateMonomial.ZERO);
 
-    public final static MultivariatePolynomial ONE = new MultivariatePolynomial(
-            Arrays.asList(MultivariateMonomial.ONE));
+    public final static MultivariatePolynomial ONE = new MultivariatePolynomial(MultivariateMonomial.ONE);
 
     private List<MultivariateMonomial> monomialList;
+
+
+    public MultivariatePolynomial(@NotNull MultivariateMonomial... monomials) {
+        this(Arrays.asList(monomials));
+    }
 
     public MultivariatePolynomial(List<MultivariateMonomial> monomialList) {
         this.monomialList = monomialList.stream()
@@ -34,13 +38,21 @@ public class MultivariatePolynomial {
     }
 
     public MultivariatePolynomial add(MultivariateMonomial augend) {
-        return add(new MultivariatePolynomial(Arrays.asList(augend)));
+        return add(new MultivariatePolynomial(augend));
     }
 
     public MultivariatePolynomial add(MultivariatePolynomial augend) {
         List<MultivariateMonomial> union = new ArrayList(monomialList);
         union.addAll(augend.monomialList);
         return new MultivariatePolynomial(union);
+    }
+
+    public MultivariatePolynomial subtract(MultivariateMonomial subtrahend) {
+        return this.add(subtrahend.multiply(new MultivariateMonomial(new RationalNumber(-1))));
+    }
+
+    public MultivariatePolynomial subtract(MultivariatePolynomial subtrahend) {
+        return this.add(subtrahend.multiply(new MultivariateMonomial(new RationalNumber(-1))));
     }
 
     public MultivariatePolynomial multiply(MultivariateMonomial multiplicandMonomial) {
