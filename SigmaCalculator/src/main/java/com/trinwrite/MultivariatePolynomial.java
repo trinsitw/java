@@ -1,7 +1,6 @@
 package com.trinwrite;
 
 import com.sun.istack.internal.NotNull;
-import com.sun.org.apache.xpath.internal.operations.Mult;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,11 +29,15 @@ public class MultivariatePolynomial {
                 .stream()
                 .map(entry -> new MultivariateMonomial(entry.getValue(), entry.getKey()))
                 .filter(monomial -> !monomial.equals(MultivariateMonomial.ZERO))
-                .sorted()
+               // .sorted()
                 .collect(Collectors.toList());
         if (this.monomialList.size() == 0) {
             this.monomialList.add(MultivariateMonomial.ZERO);
         }
+    }
+
+    public List<MultivariateMonomial> monomialList() {
+        return new ArrayList<>(monomialList);
     }
 
     public MultivariatePolynomial add(MultivariateMonomial augend) {
@@ -132,10 +135,10 @@ public class MultivariatePolynomial {
     @Override
     public String toString() {
         return String.join(
-                " + ",
-                monomialList.stream()
-                        .map(monomial -> monomial.toString())
-                        .collect(Collectors.toList()));
+            " + ",
+            monomialList.stream()
+                .map(monomial -> monomial.toString())
+                .collect(Collectors.toList()));
     }
 
     @Override
@@ -143,11 +146,12 @@ public class MultivariatePolynomial {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MultivariatePolynomial that = (MultivariatePolynomial) o;
-        return Objects.equals(monomialList, that.monomialList);
+        return new HashSet<>(monomialList).containsAll(new HashSet<>(that.monomialList))
+                && new HashSet<>(that.monomialList).containsAll(new HashSet<>(monomialList));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(monomialList);
+        return Objects.hash(new HashSet<>(monomialList));
     }
 }

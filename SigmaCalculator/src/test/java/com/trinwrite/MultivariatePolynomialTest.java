@@ -199,7 +199,7 @@ public class MultivariatePolynomialTest {
         System.out.println("mp1: " + mp1);
         System.out.println("mp1.multiply(mp1): " + mp1.multiply(mp1));
         System.out.println("mp2: " + mp2);
-        assertEquals(mp1.multiply(mp1), mp2);
+        assert(mp1.multiply(mp1).equals(mp2));
     }
 
     @Test
