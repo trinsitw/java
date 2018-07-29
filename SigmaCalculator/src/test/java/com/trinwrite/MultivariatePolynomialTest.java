@@ -1,10 +1,13 @@
 package com.trinwrite;
 
+import org.junit.Assert;
 import org.junit.Test;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 
 import static junit.framework.TestCase.assertEquals;
+import static com.trinwrite.MultivariatePolynomial.*;
 
 public class MultivariatePolynomialTest {
     @Test
@@ -266,11 +269,11 @@ public class MultivariatePolynomialTest {
                 new MultivariateMonomial(new RationalNumber(2), 'x', 1),
                 MultivariateMonomial.ONE);
         System.out.println(mp1);
-        System.out.println("mp1.evaluate(3): " + mp1.evaluate(new RationalNumber(3)));
-        assertEquals(mp1.evaluate(new RationalNumber(3)), new RationalNumber(16));
+        System.out.println("mp1.evaluate(3): " + mp1.evaluate(new BigInteger("3")));
+        assertEquals(mp1.evaluate(new BigInteger("3")), new BigInteger("16"));
 
-        System.out.println("mp1.evaluate(-1): " + mp1.evaluate(new RationalNumber(-2)));
-        assertEquals(mp1.evaluate(new RationalNumber(-2)), RationalNumber.ONE);
+        System.out.println("mp1.evaluate(-1): " + mp1.evaluate(new BigInteger("-2")));
+        assertEquals(mp1.evaluate(new BigInteger("-2")), BigInteger.ONE);
 
         MultivariatePolynomial mp2 = new MultivariatePolynomial(
                 new MultivariateMonomial(RationalNumber.ONE, 'x', 2),
@@ -278,13 +281,63 @@ public class MultivariatePolynomialTest {
                 new MultivariateMonomial(new RationalNumber(2), 'x', 1),
                 MultivariateMonomial.ONE);
         System.out.println("mp2: " + mp2);
-        System.out.println("mp2.evaluate(RationalNumber.ONE): " + mp2.evaluate(RationalNumber.ONE));
-        assertEquals(mp2.evaluate(RationalNumber.ONE), new RationalNumber(6));
+        System.out.println("mp2.evaluate(RationalNumber.ONE): " + mp2.evaluate(BigInteger.ONE));
+        assertEquals(mp2.evaluate(BigInteger.ONE), new BigInteger("6"));
 
         MultivariatePolynomial mp3 = MultivariatePolynomial.ONE;
         System.out.println("mp3: " + mp3);
-        System.out.println("mp3.evaluate(RationalNumber.ZERO): " + mp3.evaluate(RationalNumber.ZERO));
-        assertEquals(mp3.evaluate(RationalNumber.ZERO), RationalNumber.ONE);
+        System.out.println("mp3.evaluate(RationalNumber.ZERO): " + mp3.evaluate(BigInteger.ZERO));
+        assertEquals(mp3.evaluate(BigInteger.ZERO), BigInteger.ONE);
 
+    }
+
+    @Test
+    public void gcdTest() {
+        Assert.assertEquals(
+                gcd(new BigInteger("3"), new BigInteger("2")),
+                BigInteger.ONE);
+        Assert.assertEquals(
+                gcd(new BigInteger("2"),new BigInteger("3")),
+                BigInteger.ONE);
+        Assert.assertEquals(
+                gcd(new BigInteger("2"),new BigInteger("4")),
+                new BigInteger("2"));
+        Assert.assertEquals(
+                gcd(new BigInteger("12"),new BigInteger("18")),
+                new BigInteger("6"));
+        Assert.assertEquals(
+                gcd(new BigInteger("18"),new BigInteger("12")),
+                new BigInteger("6"));
+        Assert.assertEquals(
+                gcd(BigInteger.ONE,BigInteger.ONE),
+                BigInteger.ONE);
+    }
+
+    @Test
+    public void lcmTest() {
+        BigInteger[] bigIntegers1 = new BigInteger[] {
+                new BigInteger("2"),
+                new BigInteger("6"),
+                new BigInteger("12") };
+        assertEquals(lcm(bigIntegers1), new BigInteger("12"));
+
+        BigInteger[] bigIntegers2 = new BigInteger[] {
+                new BigInteger("3"),
+                new BigInteger("5"),
+                new BigInteger("6") };
+        assertEquals(lcm(bigIntegers2), new BigInteger("30"));
+
+    }
+
+    @Test
+    public void alternativePolynomialProductTest() {
+        MultivariatePolynomial p1 = new MultivariatePolynomial(
+          new MultivariateMonomial(new RationalNumber(1,5), 'n', 5),
+                new MultivariateMonomial(new RationalNumber(1,2), 'n', 4),
+                new MultivariateMonomial(new RationalNumber(1,3), 'n', 3),
+         new MultivariateMonomial(new RationalNumber(-1,30), 'n',1));
+        System.out.println("p1: " + p1);
+        System.out.println("p1.alternativePolynomialProduct()[0]: " + p1.alternativePolynomialProduct()[0]);
+        System.out.println("p1.alternativePolynomialProduct()[1]: " + p1.alternativePolynomialProduct()[1]);
     }
 }

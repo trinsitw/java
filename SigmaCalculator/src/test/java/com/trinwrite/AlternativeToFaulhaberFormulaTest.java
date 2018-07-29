@@ -2,23 +2,27 @@ package com.trinwrite;
 
 import org.junit.Test;
 
+import java.math.BigInteger;
+
 import static com.trinwrite.AlternativeToFaulhaberFormula.*;
 import static junit.framework.TestCase.assertEquals;
 
 public class AlternativeToFaulhaberFormulaTest {
     @Test
     public void sumOfKthPowersOfFirstNPositiveIntegersTest() {
-        for (int k = 1; k <= 5; k++) {
+        for (int k = 1; k <= 200; k++) {
             MultivariatePolynomial formula = sumOfKthPowersOfFirstNPositiveIntegers(k);
-            System.out.println(formula.evaluate(new RationalNumber(100)));
-            System.out.println(directCalculation(k, 100));
+            BigInteger formulaOutput = formula.evaluate(new BigInteger("100"));
+            System.out.println("formulaOutput[" + k + "]: " + formulaOutput);
+            BigInteger directCalculation = directCalculation(k, 100);
+            assertEquals(formulaOutput, directCalculation);
         }
     }
 
-    private static RationalNumber directCalculation(int k, int n) {
-        RationalNumber sum = RationalNumber.ZERO;
-        for (int i = 0; i <= n; i++) {
-            sum = sum.add(new RationalNumber(i).pow(k));
+    private static BigInteger directCalculation(int k, int n) {
+        BigInteger sum = BigInteger.ZERO;
+        for (int i = 1; i <= n; i++) {
+            sum = sum.add(new BigInteger(String.valueOf(i)).pow(k));
         }
         return sum;
     }

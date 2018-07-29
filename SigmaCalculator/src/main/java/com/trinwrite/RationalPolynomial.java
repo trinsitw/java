@@ -154,7 +154,7 @@ public class RationalPolynomial {
             if (coefficients[i].equals(RationalNumber.ZERO)) {
                 continue;
             }
-            if (coefficients[i].numerator() < 0) {
+            if (coefficients[i].numerator().compareTo(BigInteger.ZERO) < 0) {
                 builder.append("-");
             } else if (i != coefficients.length -1) {
                 builder.append("+");
@@ -165,10 +165,10 @@ public class RationalPolynomial {
                     builder.append("1");
                 }
             } else  {
-                if (coefficients[i].denominator() == 1) {
-                    builder.append(Math.abs(coefficients[i].numerator()));
+                if (coefficients[i].denominator().equals(BigInteger.ONE)) {
+                    builder.append(coefficients[i].numerator().abs());
                 } else {
-                    builder.append("(" + Math.abs(coefficients[i].numerator())
+                    builder.append("(" + coefficients[i].numerator().abs()
                             + "/" + coefficients[i].denominator() + ")");
                 }
             }

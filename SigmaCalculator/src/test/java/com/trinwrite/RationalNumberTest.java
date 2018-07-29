@@ -25,21 +25,6 @@ public class RationalNumberTest {
         assertEquals(r7, r8);
     }
 
-    @Test
-    public void gcdTest() {
-        assertEquals(
-                RationalNumber.gcd(2,3),
-                1);
-        assertEquals(
-                RationalNumber.gcd(2,4),
-                2);
-        assertEquals(
-                RationalNumber.gcd(12,18),
-                6);
-        assertEquals(
-                RationalNumber.gcd(1,1),
-                1);
-    }
 
     @Test
     public void addTest() {

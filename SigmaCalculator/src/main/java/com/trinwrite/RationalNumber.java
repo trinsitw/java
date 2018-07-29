@@ -2,57 +2,63 @@ package com.trinwrite;
 
 import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
 
+import java.math.BigInteger;
 import java.util.stream.IntStream;
 
 public class RationalNumber {
-    private int numerator;
-    private int denominator;
+    private BigInteger numerator;
+    private BigInteger denominator;
 
     public static final RationalNumber ZERO = new RationalNumber(0,1);
     public static final RationalNumber ONE = new RationalNumber(1,1);
 
+    public RationalNumber(BigInteger a, BigInteger b) {
+        if (b.equals(BigInteger.ZERO)) {
+            throw new IllegalArgumentException();
+        }
+        BigInteger gcd = a.gcd(b);
+        numerator = a.divide(gcd);
+        denominator = b.divide(gcd);
+        if ((a.compareTo(BigInteger.ZERO) < 0 && b.compareTo(BigInteger.ZERO) < 0)
+                || (a.compareTo(BigInteger.ZERO) >= 0 && b.compareTo(BigInteger.ZERO) < 0)) {
+            numerator = new BigInteger("-1").multiply(numerator);
+            denominator = new BigInteger("-1").multiply(denominator);
+        }
+    }
+
     public RationalNumber(int a) {
-        this(a, 1);
+        this(new BigInteger(String.valueOf(a)), BigInteger.ONE);
     }
 
     public RationalNumber(int a, int b) {
-        if (b == 0) {
-            throw new ArithmeticException();
-        }
-        int gcd = gcd(Math.abs(a), Math.abs(b));
-        numerator = a / gcd;
-        denominator = b / gcd;
-        if ((a < 0 && b < 0) || (a >= 0 && b < 0)) {
-            numerator = -1*numerator;
-            denominator = -1*denominator;
-        }
+        this(new BigInteger(String.valueOf(a)), new BigInteger(String.valueOf(b)));
     }
 
-    public int numerator() {
+    public BigInteger numerator() {
         return numerator;
     }
 
-    public int denominator() {
+    public BigInteger denominator() {
         return denominator;
     }
 
     public RationalNumber add(RationalNumber augend) {
         return new RationalNumber(
-                numerator*augend.denominator() + denominator*augend.numerator(),
-                denominator*augend.denominator());
+                numerator.multiply(augend.denominator()).add(denominator.multiply(augend.numerator())),
+                denominator.multiply(augend.denominator()));
     }
 
     public RationalNumber subtract(RationalNumber subtrahend) {
         return this.add(
                 new RationalNumber(
-                        -1*subtrahend.numerator(),
+                        new BigInteger("-1").multiply(subtrahend.numerator()),
                         subtrahend.denominator()));
     }
 
     public RationalNumber multiply(RationalNumber multiplicand) {
         return new RationalNumber(
-                numerator*multiplicand.numerator(),
-                denominator*multiplicand.denominator());
+                numerator.multiply(multiplicand.numerator()),
+                denominator.multiply(multiplicand.denominator()));
     }
 
     public RationalNumber pow(int exponent) {
@@ -71,35 +77,22 @@ public class RationalNumber {
 
     @Override
     public String toString() {
-        if (numerator == 0) return "0";
-        if (denominator == 1) return String.valueOf(numerator);
+        if (numerator.equals(BigInteger.ZERO)) return "0";
+        if (denominator.equals(BigInteger.ONE)) return String.valueOf(numerator);
         return numerator + "/" + denominator;
     }
 
     @Override
-    public boolean equals(Object that) {
-        if (!(that instanceof RationalNumber)) {
+    public boolean equals(Object object) {
+        if (!(object instanceof RationalNumber)) {
             return false;
         }
-        RationalNumber another = (RationalNumber) that;
-        return numerator*another.denominator() == denominator*another.numerator();
+        RationalNumber that = (RationalNumber) object;
+        return numerator.multiply(that.denominator()).equals(denominator.multiply(that.numerator()));
     }
 
     @Override
     public int hashCode() {
-        return numerator*7 + denominator*31;
-    }
-
-    protected static int gcd(int a, int b) {
-        if (a < b) {
-            return gcd(b, a);
-        }
-        if (b < 0) {
-            throw new IllegalArgumentException();
-        }
-        if (b == 0) {
-            return a;
-        }
-        return gcd(b, a%b);
+        return numerator.hashCode()*7 + denominator.hashCode()*31;
     }
 }

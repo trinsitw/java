@@ -2,6 +2,7 @@ package com.trinwrite;
 
 import com.sun.istack.internal.NotNull;
 
+import java.math.BigInteger;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -9,11 +10,9 @@ import java.util.stream.IntStream;
 public class MultivariatePolynomial {
 
     public final static MultivariatePolynomial ZERO = new MultivariatePolynomial(MultivariateMonomial.ZERO);
-
     public final static MultivariatePolynomial ONE = new MultivariatePolynomial(MultivariateMonomial.ONE);
 
     private List<MultivariateMonomial> monomialList;
-
 
     public MultivariatePolynomial(@NotNull MultivariateMonomial... monomials) {
         this(Arrays.asList(monomials));
@@ -77,7 +76,7 @@ public class MultivariatePolynomial {
                 .reduce(MultivariatePolynomial.ONE, (polynomial1, polynomial2) -> polynomial1.multiply(polynomial2));
     }
 
-    public RationalNumber evaluate(RationalNumber x) {
+    public BigInteger evaluate(BigInteger x) {
         if (monomialList.stream()
                 .flatMap(monomial -> monomial.indeterminateExponentList().stream()
                         .map(ie -> ie.indeterminate())
@@ -87,16 +86,21 @@ public class MultivariatePolynomial {
                 .collect(Collectors.toList()).size() > 1) {
             throw new IllegalArgumentException("Only univariate polynomial can be evaluated.");
         }
-        return this.monomialList.stream()
-                .map(monomial -> {
-                    if (monomial.indeterminateExponentList().size() == 1) {
-                        return monomial.coefficient()
-                                .multiply(x.pow(monomial.indeterminateExponentList().get(0).exponent()));
-                    } else {
-                        return monomial.coefficient();
-                    }
-                })
-                .reduce(RationalNumber.ZERO, (r1, r2) -> r1.add(r2));
+        List<BigInteger> denominatorList = this.monomialList.stream()
+                .map(monomial -> new BigInteger(String.valueOf(monomial.coefficient().denominator())))
+                .collect(Collectors.toList());
+        BigInteger denominatorLcm = lcm(denominatorList.toArray(new BigInteger[0]));
+
+        BigInteger numerator = this.monomialList.stream()
+                .map(monomial -> denominatorLcm
+                    .divide(new BigInteger(String.valueOf(monomial.coefficient().denominator())))
+                    .multiply(new BigInteger(String.valueOf(monomial.coefficient().numerator())))
+                    .multiply(
+                            (monomial.indeterminateExponentList().size() > 0?
+                                    new BigInteger(String.valueOf(x.pow(monomial.indeterminateExponentList().get(0).exponent())))
+                                    :BigInteger.ONE)))
+                .reduce(BigInteger.ZERO, (bi1, bi2) -> bi1.add(bi2));
+        return numerator.divide(denominatorLcm);
     }
 
     public MultivariatePolynomial compose(char targetIndeterminate, MultivariatePolynomial substitution) {
@@ -153,5 +157,19 @@ public class MultivariatePolynomial {
     @Override
     public int hashCode() {
         return Objects.hash(new HashSet<>(monomialList));
+    }
+
+    protected static BigInteger gcd(BigInteger a, BigInteger b) {
+        return a.gcd(b);
+    }
+
+    protected static BigInteger lcm(BigInteger a, BigInteger b) {
+        return a.multiply(b).divide(gcd(a, b));
+    }
+
+    protected static BigInteger lcm(BigInteger[] input) {
+        BigInteger result = input[0];
+        for(int i = 1; i < input.length; i++) result = lcm(result, input[i]);
+        return result;
     }
 }
