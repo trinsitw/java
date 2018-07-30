@@ -84,8 +84,7 @@ public class MultivariateMonomial implements Comparable<MultivariateMonomial> {
         if (o == null || getClass() != o.getClass()) return false;
         MultivariateMonomial that = (MultivariateMonomial) o;
         return Objects.equals(coefficient, that.coefficient) &&
-                new HashSet<>(indeterminateExponentList).containsAll(new HashSet<>(that.indeterminateExponentList))
-                && new HashSet<>(that.indeterminateExponentList).containsAll(new HashSet<>(indeterminateExponentList));
+                new HashSet<>(indeterminateExponentList).equals(new HashSet<>(that.indeterminateExponentList));
     }
 
     @Override

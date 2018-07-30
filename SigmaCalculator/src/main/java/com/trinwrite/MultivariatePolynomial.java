@@ -96,9 +96,9 @@ public class MultivariatePolynomial {
                     .divide(new BigInteger(String.valueOf(monomial.coefficient().denominator())))
                     .multiply(new BigInteger(String.valueOf(monomial.coefficient().numerator())))
                     .multiply(
-                            (monomial.indeterminateExponentList().size() > 0?
+                            monomial.indeterminateExponentList().size() > 0?
                                     new BigInteger(String.valueOf(x.pow(monomial.indeterminateExponentList().get(0).exponent())))
-                                    :BigInteger.ONE)))
+                                    :BigInteger.ONE))
                 .reduce(BigInteger.ZERO, (bi1, bi2) -> bi1.add(bi2));
         return numerator.divide(denominatorLcm);
     }
@@ -150,8 +150,7 @@ public class MultivariatePolynomial {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MultivariatePolynomial that = (MultivariatePolynomial) o;
-        return new HashSet<>(monomialList).containsAll(new HashSet<>(that.monomialList))
-                && new HashSet<>(that.monomialList).containsAll(new HashSet<>(monomialList));
+        return new HashSet<>(monomialList).equals(new HashSet<>(that.monomialList));
     }
 
     @Override
