@@ -93,10 +93,10 @@ public class MultivariatePolynomial {
                 .map(monomial -> monomial.coefficient().numerator().multiply(
                         monomial.indeterminateExponentList().size() > 0?
                                 x.pow(monomial.indeterminateExponentList().get(0).exponent())
-                                :BigInteger.ONE
-
-                )).reduce(BigInteger.ZERO, (bi1, bi2) -> bi1.add(bi2));
-        return output.divide(coefficient.denominator());
+                                :BigInteger.ONE))
+                .reduce(BigInteger.ZERO, (bi1, bi2) -> bi1.add(bi2));
+        output = output.divide(coefficient.denominator());
+        return output;
     }
 
     public MultivariatePolynomial compose(char targetIndeterminate, MultivariatePolynomial substitution) {
