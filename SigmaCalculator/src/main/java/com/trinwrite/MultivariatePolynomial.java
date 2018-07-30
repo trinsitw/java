@@ -98,34 +98,7 @@ public class MultivariatePolynomial {
                 )).reduce(BigInteger.ZERO, (bi1, bi2) -> bi1.add(bi2));
         return output.divide(coefficient.denominator());
     }
-/*
-    public BigInteger evaluate(BigInteger x) {
-        if (monomialList.stream()
-                .flatMap(monomial -> monomial.indeterminateExponentList().stream()
-                        .map(ie -> ie.indeterminate())
-                        .collect(Collectors.toList())
-                        .stream())
-                .distinct()
-                .collect(Collectors.toList()).size() > 1) {
-            throw new IllegalArgumentException("Only univariate polynomial can be evaluated.");
-        }
-        List<BigInteger> denominatorList = this.monomialList.stream()
-                .map(monomial -> new BigInteger(String.valueOf(monomial.coefficient().denominator())))
-                .collect(Collectors.toList());
-        BigInteger denominatorLcm = lcm(denominatorList.toArray(new BigInteger[0]));
 
-        BigInteger numerator = this.monomialList.stream()
-                .map(monomial -> denominatorLcm
-                    .divide(new BigInteger(String.valueOf(monomial.coefficient().denominator())))
-                    .multiply(new BigInteger(String.valueOf(monomial.coefficient().numerator())))
-                    .multiply(
-                            monomial.indeterminateExponentList().size() > 0?
-                                    new BigInteger(String.valueOf(x.pow(monomial.indeterminateExponentList().get(0).exponent())))
-                                    :BigInteger.ONE))
-                .reduce(BigInteger.ZERO, (bi1, bi2) -> bi1.add(bi2));
-        return numerator.divide(denominatorLcm);
-    }
-*/
     public MultivariatePolynomial compose(char targetIndeterminate, MultivariatePolynomial substitution) {
         if (monomialList.stream().noneMatch(monomial ->
                 monomial.indeterminateExponentList().stream().anyMatch(ie -> ie.indeterminate() == targetIndeterminate))) {
