@@ -86,6 +86,29 @@ public class MultivariatePolynomial {
                 .collect(Collectors.toList()).size() > 1) {
             throw new IllegalArgumentException("Only univariate polynomial can be evaluated.");
         }
+        CommonDenominatorForm cdf = this.commonDenominatorForm();
+        RationalNumber coefficient = cdf.coefficient();
+        MultivariatePolynomial polynomial = cdf.polynomial();
+        BigInteger output = polynomial.monomialList().stream()
+                .map(monomial -> monomial.coefficient().numerator().multiply(
+                        monomial.indeterminateExponentList().size() > 0?
+                                x.pow(monomial.indeterminateExponentList().get(0).exponent())
+                                :BigInteger.ONE
+
+                )).reduce(BigInteger.ZERO, (bi1, bi2) -> bi1.add(bi2));
+        return output.divide(coefficient.denominator());
+    }
+/*
+    public BigInteger evaluate(BigInteger x) {
+        if (monomialList.stream()
+                .flatMap(monomial -> monomial.indeterminateExponentList().stream()
+                        .map(ie -> ie.indeterminate())
+                        .collect(Collectors.toList())
+                        .stream())
+                .distinct()
+                .collect(Collectors.toList()).size() > 1) {
+            throw new IllegalArgumentException("Only univariate polynomial can be evaluated.");
+        }
         List<BigInteger> denominatorList = this.monomialList.stream()
                 .map(monomial -> new BigInteger(String.valueOf(monomial.coefficient().denominator())))
                 .collect(Collectors.toList());
@@ -102,7 +125,7 @@ public class MultivariatePolynomial {
                 .reduce(BigInteger.ZERO, (bi1, bi2) -> bi1.add(bi2));
         return numerator.divide(denominatorLcm);
     }
-
+*/
     public MultivariatePolynomial compose(char targetIndeterminate, MultivariatePolynomial substitution) {
         if (monomialList.stream().noneMatch(monomial ->
                 monomial.indeterminateExponentList().stream().anyMatch(ie -> ie.indeterminate() == targetIndeterminate))) {
@@ -158,17 +181,71 @@ public class MultivariatePolynomial {
         return Objects.hash(new HashSet<>(monomialList));
     }
 
-    protected static BigInteger gcd(BigInteger a, BigInteger b) {
+    static BigInteger gcd(BigInteger a, BigInteger b) {
         return a.gcd(b);
     }
 
-    protected static BigInteger lcm(BigInteger a, BigInteger b) {
+    static BigInteger lcm(BigInteger a, BigInteger b) {
         return a.multiply(b).divide(gcd(a, b));
     }
 
-    protected static BigInteger lcm(BigInteger[] input) {
+    static BigInteger lcm(BigInteger[] input) {
         BigInteger result = input[0];
         for(int i = 1; i < input.length; i++) result = lcm(result, input[i]);
         return result;
+    }
+
+    CommonDenominatorForm commonDenominatorForm() {
+        List<BigInteger> denominatorList = monomialList.stream()
+                .map(monomial -> monomial.coefficient().denominator())
+                .collect(Collectors.toList());
+        BigInteger denominatorLcm = lcm(denominatorList.toArray(new BigInteger[0]));
+        RationalNumber coefficient = new RationalNumber(BigInteger.ONE, denominatorLcm);
+        MultivariatePolynomial polynomial = monomialList.stream()
+                .map(monomial -> new MultivariatePolynomial(new MultivariateMonomial(
+                                new RationalNumber(denominatorLcm
+                                        .divide(monomial.coefficient().denominator())
+                                        .multiply(monomial.coefficient().numerator())),
+                                monomial.indeterminateExponentList())))
+                .reduce(MultivariatePolynomial.ZERO, (p1, p2) -> p1.add(p2));
+        return new CommonDenominatorForm(coefficient, polynomial);
+    }
+
+    class CommonDenominatorForm {
+
+        private RationalNumber coefficient;
+        private MultivariatePolynomial polynomial;
+
+        public CommonDenominatorForm(RationalNumber coefficient, MultivariatePolynomial polynomial) {
+            this.coefficient = coefficient;
+            this.polynomial = polynomial;
+        }
+
+        public RationalNumber coefficient() {
+            return coefficient;
+        }
+
+        public MultivariatePolynomial polynomial() {
+            return polynomial;
+        }
+
+        @Override
+        public String toString() {
+            return "(" + coefficient + "){" + polynomial + "}";
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            CommonDenominatorForm that = (CommonDenominatorForm) o;
+            return Objects.equals(coefficient, that.coefficient) &&
+                    Objects.equals(polynomial, that.polynomial);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(coefficient, polynomial);
+        }
     }
 }

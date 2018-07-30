@@ -7,8 +7,8 @@ public class AlternativeToFaulhaberFormula {
     private static Map<Integer, MultivariatePolynomial> sumOfKthPowersOfFirstNPositiveIntegers = new HashMap<>();
 
     public static void main(String[] argv) {
-        for (int k = 1; k <= 200; k++) {
-            System.out.println("\\Sigma_{i^" + k + "} = " + sumOfKthPowersOfFirstNPositiveIntegers(k));
+        for (int k = 1; k <= 100; k++) {
+            System.out.println("\\Sigma_{i^" + k + "} = " + sumOfKthPowersOfFirstNPositiveIntegers(k).commonDenominatorForm());
         }
     }
 

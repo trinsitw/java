@@ -26,6 +26,11 @@ public class RationalNumber {
         }
     }
 
+    public RationalNumber(BigInteger a) {
+        this(a, BigInteger.ONE);
+    }
+
+
     public RationalNumber(int a) {
         this(new BigInteger(String.valueOf(a)), BigInteger.ONE);
     }

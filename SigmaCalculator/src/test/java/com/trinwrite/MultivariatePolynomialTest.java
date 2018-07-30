@@ -326,6 +326,27 @@ public class MultivariatePolynomialTest {
                 new BigInteger("5"),
                 new BigInteger("6") };
         assertEquals(lcm(bigIntegers2), new BigInteger("30"));
-
     }
+
+
+
+    @Test
+    public void alternativePolynomialProductTest() {
+        MultivariatePolynomial p1 = new MultivariatePolynomial(
+            new MultivariateMonomial(new RationalNumber(1,5), 'n', 5),
+            new MultivariateMonomial(new RationalNumber(1,2), 'n', 4),
+            new MultivariateMonomial(new RationalNumber(1,3), 'n', 3),
+            new MultivariateMonomial(new RationalNumber(-1,30), 'n',1));
+        System.out.println("p1: " + p1);
+        MultivariatePolynomial.CommonDenominatorForm cdf = p1.commonDenominatorForm();
+        System.out.println("cdf: " + cdf);
+        MultivariatePolynomial p2 = new MultivariatePolynomial(
+                new MultivariateMonomial(new RationalNumber(6,1), 'n', 5),
+                new MultivariateMonomial(new RationalNumber(15,1), 'n', 4),
+                new MultivariateMonomial(new RationalNumber(10,1), 'n', 3),
+                new MultivariateMonomial(new RationalNumber(-1,1), 'n',1));
+        System.out.println("p2: " + p2);
+        assertEquals(cdf.coefficient(), new RationalNumber(1, 30));
+        assertEquals(cdf.polynomial(), p2);
+        }
 }

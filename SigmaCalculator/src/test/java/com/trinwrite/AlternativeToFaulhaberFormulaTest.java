@@ -10,11 +10,11 @@ import static junit.framework.TestCase.assertEquals;
 public class AlternativeToFaulhaberFormulaTest {
     @Test
     public void sumOfKthPowersOfFirstNPositiveIntegersTest() {
-        for (int k = 1; k <= 20; k++) {
+        for (int k = 1; k <= 50; k++) {
             MultivariatePolynomial formula = sumOfKthPowersOfFirstNPositiveIntegers(k);
-            BigInteger formulaOutput = formula.evaluate(new BigInteger("100"));
+            BigInteger formulaOutput = formula.evaluate(new BigInteger("1000"));
             System.out.println("formulaOutput[" + k + "]: " + formulaOutput);
-            BigInteger directCalculation = directCalculation(k, 100);
+            BigInteger directCalculation = directCalculation(k, 1000);
             System.out.println("directCalculation[" + k + "]: " + directCalculation);
             System.out.println();
             assertEquals(formulaOutput, directCalculation);
