@@ -109,11 +109,8 @@ public class MultivariatePolynomial {
                         .stream()
                         .noneMatch(ie -> ie.indeterminate() == targetIndeterminate))
                 .collect(Collectors.toList());
-        List<MultivariateMonomial> monomialsWithTargetIndeterminate = this.monomialList.stream()
-                .filter(monomial -> monomial.indeterminateExponentList()
-                        .stream()
-                        .anyMatch(ie -> ie.indeterminate() == targetIndeterminate))
-                .collect(Collectors.toList());
+        List<MultivariateMonomial> monomialsWithTargetIndeterminate = new ArrayList<>(monomialList);
+        monomialsWithTargetIndeterminate.removeAll(monomialsWithoutTargetIndeterminate);
         MultivariatePolynomial composedPolynomial =
                 monomialsWithTargetIndeterminate.stream().map(
                         monomial -> {
