@@ -3,6 +3,7 @@ package com.trinwrite;
 import org.junit.Test;
 
 import java.math.BigInteger;
+import java.util.stream.IntStream;
 
 import static com.trinwrite.AlternativeToFaulhaberFormula.*;
 import static junit.framework.TestCase.assertEquals;
@@ -22,11 +23,9 @@ public class AlternativeToFaulhaberFormulaTest {
     }
 
     private static BigInteger directCalculation(int k, int n) {
-        BigInteger sum = BigInteger.ZERO;
-        for (int i = 1; i <= n; i++) {
-            sum = sum.add(new BigInteger(String.valueOf(i)).pow(k));
-        }
-        return sum;
+        return IntStream.rangeClosed(1, n)
+                .mapToObj(i -> new BigInteger(String.valueOf(i)).pow(k))
+                .reduce(BigInteger.ZERO, (bi1, bi2) -> bi1.add(bi2));
     }
 
     @Test
