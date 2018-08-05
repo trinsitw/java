@@ -26,8 +26,7 @@ public class BellmanFordAlgorithm implements  ShortestPathAlgorithm {
                 }
             }
         }
-
-        // look for negative cycle
+        // Look for negative cycle.
         Map<Vertex, BigDecimal> newD = new HashMap<>(D);
         for (WeightedDirectedEdge edge: inputGraph.edges()) {
             if (newD.get(edge.vertex1()).add(edge.weight()).compareTo(newD.get(edge.vertex2())) < 0) {
@@ -40,50 +39,55 @@ public class BellmanFordAlgorithm implements  ShortestPathAlgorithm {
         return new WeightedDirectedGraph(inputGraph.vertices(), shortestPath);
     }
 
-    public WeightedDirectedGraph findNegativeCycle(WeightedDirectedGraph inputGraph, Vertex s) {
-        Set<WeightedDirectedEdge> shortestPath = new TreeSet<>();
-        Map<Vertex, BigDecimal> D = inputGraph.vertices().stream()
-                .collect(Collectors.toMap(v->v, v-> new BigDecimal(String.valueOf(Long.MAX_VALUE))));
-        D.put(s, BigDecimal.ZERO);
-        for (int i = 0; i < inputGraph.vertices().size() -1; i++ ) {
-            for (WeightedDirectedEdge edge: inputGraph.edges()) {
-                if (D.get(edge.vertex1()).add(edge.weight()).compareTo(D.get(edge.vertex2())) < 0) {
-                    D.put(edge.vertex2(), D.get(edge.vertex1()).add(edge.weight()));
-                    Optional<WeightedDirectedEdge> cancelledEdge = shortestPath.stream()
-                            .filter(e -> e.vertex2().equals(edge.vertex2())).findFirst();
-                    cancelledEdge.ifPresent(e -> shortestPath.remove(e));
-                    shortestPath.add(edge);
-                }
+    public WeightedDirectedGraph findNegativeCycle(WeightedDirectedGraph inputGraph) {
+        Set<Vertex> whiteVertices = new HashSet<>(inputGraph.vertices());
+        Set<Vertex> greyVertices = new HashSet<>();
+        Set<Vertex> blackVertices = new HashSet<>();
+
+        while (whiteVertices.size() > 0) {
+            Vertex vertex = whiteVertices.iterator().next();
+            if (dfs(vertex, inputGraph.edges(), whiteVertices, greyVertices, blackVertices)) {
+                break;
             }
         }
+        Set<WeightedDirectedEdge> greyEdges = inputGraph.edges().stream()
+                .filter(edge -> greyVertices.contains(edge.vertex1()) && greyVertices.contains(edge.vertex2()))
+                .collect(Collectors.toSet());
+        Set<WeightedDirectedEdge> negativeCycleEdges = new HashSet<>(greyEdges);
 
-        // look for negative cycle
-        Map<Vertex, BigDecimal> newD = new HashMap<>(D);
-        for (WeightedDirectedEdge edge: inputGraph.edges()) {
-            if (newD.get(edge.vertex1()).add(edge.weight()).compareTo(newD.get(edge.vertex2())) < 0) {
-                newD.put(edge.vertex2(), newD.get(edge.vertex1()).add(edge.weight()));
-            }
+        while (negativeCycleEdges.stream()
+                .anyMatch(edgeA -> negativeCycleEdges.stream()
+                        .noneMatch(edgeB -> edgeB.vertex2().equals(edgeA.vertex1())))) {
+            WeightedDirectedEdge nonCycleEdge = negativeCycleEdges.stream()
+                    .filter(edgeA -> negativeCycleEdges.stream()
+                            .noneMatch(edgeB -> edgeB.vertex2().equals(edgeA.vertex1()))).findFirst().get();
+            negativeCycleEdges.remove(nonCycleEdge);
         }
-        if (newD.equals(D)) {
-            throw new IllegalArgumentException("There exists no negative cycle in the graph.");
-        }
-
-        Set<Vertex> negativeCycleVertices =
-                newD.entrySet().stream().filter(entry -> !D.get(entry.getKey()).equals(entry.getValue())).map(entry -> entry.getKey())
-                        .collect(Collectors.toSet());
-        System.out.println("negativeCycleVertices: " + negativeCycleVertices);
-        Set<WeightedDirectedEdge> negativeCycleEdges =
-                inputGraph.edges().stream().filter(edge -> negativeCycleVertices.containsAll(
-                        Arrays.asList(edge.vertex1(), edge.vertex2()))).collect(Collectors.toSet());
         return new WeightedDirectedGraph(inputGraph.vertices(), negativeCycleEdges);
     }
 
+    private boolean dfs(Vertex vertex, Set<WeightedDirectedEdge> edges, Set<Vertex> whiteSet, Set<Vertex> greySet, Set<Vertex> blackSet) {
+        moveVertex(vertex, whiteSet, greySet);
+        Set<Vertex> adjacentVertices = edges.stream()
+                .filter(edge -> edge.vertex1().equals(vertex))
+                .map(edge -> edge.vertex2()).collect(Collectors.toSet());
+        for (Vertex neighbor: adjacentVertices) {
+            if (blackSet.contains(neighbor)) {
+                continue;
+            }
+            if (greySet.contains(neighbor)) {
+                return true;
+            }
+            if (dfs(neighbor, edges, whiteSet, greySet, blackSet)) {
+                return true;
+            }
+        }
+        moveVertex(vertex, greySet, blackSet);
+        return false;
+    }
 
-    /*
-
-
-        System.out.println("D: " + D);
-        return new WeightedDirectedGraph(inputGraph.vertices(), shortestPath);
-
-     */
+    private void moveVertex(Vertex vertex, Set<Vertex> sourceSet, Set<Vertex> destinationSet) {
+        sourceSet.remove(vertex);
+        destinationSet.add(vertex);
+    }
 }

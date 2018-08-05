@@ -194,7 +194,7 @@ public class BellmanFordAlgorithmTest {
 
         ShortestPathAlgorithm shortestPathAlgorithm = new BellmanFordAlgorithm();
 
-        WeightedDirectedGraph negativeCycle = shortestPathAlgorithm.findNegativeCycle(inputGraph, A);
+        WeightedDirectedGraph negativeCycle = shortestPathAlgorithm.findNegativeCycle(inputGraph);
 
         WeightedDirectedGraph expected = new WeightedDirectedGraph(
                 inputGraph.vertices(),
@@ -207,11 +207,45 @@ public class BellmanFordAlgorithmTest {
         // GraphA
         WeightedDirectedGraph inputGraph = createGraphA();
         ShortestPathAlgorithm shortestPathAlgorithm = new BellmanFordAlgorithm();
-        WeightedDirectedGraph negativeCycle = shortestPathAlgorithm.findNegativeCycle(inputGraph, new Vertex("A"));
-        System.out.println(negativeCycle);
+        WeightedDirectedGraph negativeCycle = shortestPathAlgorithm.findNegativeCycle(inputGraph);
+        WeightedDirectedGraph expected = new WeightedDirectedGraph(
+                inputGraph.vertices(),
+                inputGraph.edges().stream()
+                        .filter(edge ->
+                                edge.name().equals("BF")
+                                        || edge.name().equals("FE")
+                                        || edge.name().equals("EB"))
+                        .collect(Collectors.toSet()));
+        System.out.println("expected: " + expected);
+        System.out.println("negativeCycle: " + negativeCycle);
+        assertEquals(expected ,negativeCycle);
+     }
+
+    @Test
+    public void findNegativeCycleTest3() {
+        Vertex v1 = new Vertex("v1");
+        Vertex v2 = new Vertex("v2");
+        Vertex v3 = new Vertex("v3");
+        Vertex v4 = new Vertex("v4");
+        Vertex v5 = new Vertex("v5");
+        Vertex v6 = new Vertex("v6");
+        Set<Vertex> vertices = Stream.of(v1, v2, v3, v4, v5, v6).collect(Collectors.toSet());
+        WeightedDirectedEdge e12 = new WeightedDirectedEdge("e12", v1, v2, 1);
+        WeightedDirectedEdge e13 = new WeightedDirectedEdge("e13", v1, v3, 1);
+        WeightedDirectedEdge e23 = new WeightedDirectedEdge("e23", v2, v3, 1);
+        WeightedDirectedEdge e41 = new WeightedDirectedEdge("e41", v4, v1, 1);
+        WeightedDirectedEdge e45 = new WeightedDirectedEdge("e45", v4, v5, 1);
+        WeightedDirectedEdge e56 = new WeightedDirectedEdge("e56", v5, v6, 1);
+        WeightedDirectedEdge e64 = new WeightedDirectedEdge("e64", v6, v4, 1);
+        Set<WeightedDirectedEdge> edges = Stream.of(e12, e13, e23, e41, e45, e56, e64).collect(Collectors.toSet());
+
+        WeightedDirectedGraph inputGraph = new WeightedDirectedGraph(vertices, edges);
+        ShortestPathAlgorithm shortestPathAlgorithm = new BellmanFordAlgorithm();
+        WeightedDirectedGraph negativeCycle = shortestPathAlgorithm.findNegativeCycle(inputGraph);
     }
 
-    @Test //(expected = IllegalArgumentException.class)
+
+    @Test(expected = IllegalArgumentException.class)
     public void findShortestPathTest4() {
         // GraphA
         WeightedDirectedGraph inputGraph = createGraphA();
@@ -237,17 +271,17 @@ public class BellmanFordAlgorithmTest {
         WeightedDirectedEdge AD = new WeightedDirectedEdge("AD", A, D, 4);
         WeightedDirectedEdge BC = new WeightedDirectedEdge("BC", B, C, 3);
         WeightedDirectedEdge BF = new WeightedDirectedEdge("BF", B, F, 2);
-        WeightedDirectedEdge CF = new WeightedDirectedEdge("CF", C, F, 6);
+       // WeightedDirectedEdge CF = new WeightedDirectedEdge("CF", C, F, 6);
         WeightedDirectedEdge DE = new WeightedDirectedEdge("DE", D, E, 5);
         WeightedDirectedEdge DG = new WeightedDirectedEdge("DG", D, G, 7);
-        WeightedDirectedEdge EB = new WeightedDirectedEdge("EB", E, B, -(-3));
-        WeightedDirectedEdge EG = new WeightedDirectedEdge("EG", E, G, -(-10));
+        WeightedDirectedEdge EB = new WeightedDirectedEdge("EB", E, B, (-3));
+        WeightedDirectedEdge EG = new WeightedDirectedEdge("EG", E, G, (-10));
         WeightedDirectedEdge EH = new WeightedDirectedEdge("EH", E, H, 9);
-        WeightedDirectedEdge FE = new WeightedDirectedEdge("FE", F, E, -(-1));
+        WeightedDirectedEdge FE = new WeightedDirectedEdge("FE", F, E, (-1));
         WeightedDirectedEdge FI = new WeightedDirectedEdge("FI", F, I, 11);
         WeightedDirectedEdge HG = new WeightedDirectedEdge("HG", H, G, 8);
         WeightedDirectedEdge HI = new WeightedDirectedEdge("HI", H, I, 10);
-        Set<WeightedDirectedEdge> edges = Stream.of(AB, AD, BC, BF, CF, DE, DG, EB, EG, EH, FE, FI, HG, HI)
+        Set<WeightedDirectedEdge> edges = Stream.of(AB, AD, BC, BF, DE, DG, EB, EG, EH, FE, FI, HG, HI)
                 .collect(Collectors.toSet());
 
         return new WeightedDirectedGraph(vertices, edges);

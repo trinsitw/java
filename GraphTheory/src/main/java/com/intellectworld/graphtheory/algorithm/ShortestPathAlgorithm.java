@@ -5,5 +5,5 @@ import com.intellectworld.graphtheory.WeightedDirectedGraph;
 
 public interface ShortestPathAlgorithm {
     WeightedDirectedGraph findShortestPath(WeightedDirectedGraph graph, Vertex s);
-    WeightedDirectedGraph findNegativeCycle(WeightedDirectedGraph graph, Vertex s);
+    WeightedDirectedGraph findNegativeCycle(WeightedDirectedGraph graph);
 }
