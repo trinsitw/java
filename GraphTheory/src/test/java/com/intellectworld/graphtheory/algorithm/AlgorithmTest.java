@@ -213,7 +213,6 @@ public class AlgorithmTest {
 
         NegativeCycleDetectionAlgorithm negativeCycleDetectionAlgorithm = new DfsAlgorithm();
         WeightedDirectedGraph negativeCycle = negativeCycleDetectionAlgorithm.findNegativeCycle(inputGraph);
-
         WeightedDirectedGraph expected = new WeightedDirectedGraph(
                 inputGraph.vertices(),
                 Stream.of(DE, ED).collect(Collectors.toSet()));

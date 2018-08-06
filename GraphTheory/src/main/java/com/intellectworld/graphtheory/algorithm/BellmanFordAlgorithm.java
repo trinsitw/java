@@ -13,10 +13,10 @@ public class BellmanFordAlgorithm implements  ShortestPathAlgorithm {
     public WeightedDirectedGraph findShortestPath(WeightedDirectedGraph inputGraph, Vertex s) {
         Set<WeightedDirectedEdge> shortestPath = new TreeSet<>();
         Map<Vertex, BigDecimal> D = inputGraph.vertices().stream()
-                .collect(Collectors.toMap(v->v, v-> new BigDecimal(String.valueOf(Long.MAX_VALUE))));
+                .collect(Collectors.toMap(v -> v, v -> new BigDecimal(String.valueOf(Long.MAX_VALUE))));
         D.put(s, BigDecimal.ZERO);
-        for (int i = 0; i < inputGraph.vertices().size() -1; i++ ) {
-            for (WeightedDirectedEdge edge: inputGraph.edges()) {
+        for (int i = 0; i < inputGraph.vertices().size() - 1; i++) {
+            for (WeightedDirectedEdge edge : inputGraph.edges()) {
                 if (D.get(edge.vertex1()).add(edge.weight()).compareTo(D.get(edge.vertex2())) < 0) {
                     D.put(edge.vertex2(), D.get(edge.vertex1()).add(edge.weight()));
                     Optional<WeightedDirectedEdge> cancelledEdge = shortestPath.stream()
@@ -28,7 +28,7 @@ public class BellmanFordAlgorithm implements  ShortestPathAlgorithm {
         }
         // Look for negative cycle.
         Map<Vertex, BigDecimal> newD = new HashMap<>(D);
-        for (WeightedDirectedEdge edge: inputGraph.edges()) {
+        for (WeightedDirectedEdge edge : inputGraph.edges()) {
             if (newD.get(edge.vertex1()).add(edge.weight()).compareTo(newD.get(edge.vertex2())) < 0) {
                 newD.put(edge.vertex2(), newD.get(edge.vertex1()).add(edge.weight()));
             }
