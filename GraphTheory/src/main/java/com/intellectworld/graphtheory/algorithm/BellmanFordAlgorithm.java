@@ -66,23 +66,24 @@ public class BellmanFordAlgorithm implements  ShortestPathAlgorithm {
         return new WeightedDirectedGraph(inputGraph.vertices(), negativeCycleEdges);
     }
 
-    private boolean dfs(Vertex vertex, Set<WeightedDirectedEdge> edges, Set<Vertex> whiteSet, Set<Vertex> greySet, Set<Vertex> blackSet) {
-        moveVertex(vertex, whiteSet, greySet);
+    private boolean dfs(Vertex vertex, Set<WeightedDirectedEdge> edges, Set<Vertex> whiteVertices, Set<Vertex> greyVertices, Set<Vertex> blackVertices) {
+        moveVertex(vertex, whiteVertices, greyVertices);
         Set<Vertex> adjacentVertices = edges.stream()
                 .filter(edge -> edge.vertex1().equals(vertex))
                 .map(edge -> edge.vertex2()).collect(Collectors.toSet());
         for (Vertex neighbor: adjacentVertices) {
-            if (blackSet.contains(neighbor)) {
+            if (blackVertices.contains(neighbor)) {
                 continue;
             }
-            if (greySet.contains(neighbor)) {
+            if (greyVertices.contains(neighbor)) {
+                System.out.println("greyVertices: " + greyVertices);
                 return true;
             }
-            if (dfs(neighbor, edges, whiteSet, greySet, blackSet)) {
+            if (dfs(neighbor, edges, whiteVertices, greyVertices, blackVertices)) {
                 return true;
             }
         }
-        moveVertex(vertex, greySet, blackSet);
+        moveVertex(vertex, greyVertices, blackVertices);
         return false;
     }
 

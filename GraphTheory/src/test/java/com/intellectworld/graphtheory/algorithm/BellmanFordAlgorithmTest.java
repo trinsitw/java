@@ -195,7 +195,7 @@ public class BellmanFordAlgorithmTest {
         ShortestPathAlgorithm shortestPathAlgorithm = new BellmanFordAlgorithm();
 
         WeightedDirectedGraph negativeCycle = shortestPathAlgorithm.findNegativeCycle(inputGraph);
-
+        System.out.println("negativeCycle: " + negativeCycle);
         WeightedDirectedGraph expected = new WeightedDirectedGraph(
                 inputGraph.vertices(),
                 Stream.of(DE, ED).collect(Collectors.toSet()));
