@@ -177,7 +177,7 @@ public class AlgorithmTest {
         assertEquals(expected, shortestPath);
     }
 
-    @Test
+/*    @Test
     public void findNegativeCycleTest1() {
         Vertex A = new Vertex("A");
         Vertex B = new Vertex("B");
@@ -217,9 +217,9 @@ public class AlgorithmTest {
                 inputGraph.vertices(),
                 Stream.of(DE, ED).collect(Collectors.toSet()));
         assertEquals(expected, negativeCycle);
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void findNegativeCycleTest2() {
         // GraphA
         WeightedDirectedGraph inputGraph = createGraphA();
@@ -346,7 +346,7 @@ public class AlgorithmTest {
 
         NegativeCycleDetectionAlgorithm negativeCycleDetectionAlgorithm = new DfsAlgorithm();
         WeightedDirectedGraph negativeCycle = negativeCycleDetectionAlgorithm.findNegativeCycle(inputGraph);
-    }
+    }*/
 
     private WeightedDirectedGraph createGraphA() {
         // GraphA - negative cycle length 3

@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 public class Example {
 
     public static void main(String[] args) {
-        {
+    /*    {
             Vertex v1 = new Vertex("v1");
             Vertex v2 = new Vertex("v2");
             Vertex v3 = new Vertex("v3");
@@ -61,6 +61,6 @@ public class Example {
             NegativeCycleDetectionAlgorithm negativeCycleDetectionAlgorithm = new DfsAlgorithm();
             WeightedDirectedGraph negativeCycle = negativeCycleDetectionAlgorithm.findNegativeCycle(inputGraph);
             System.out.println("negativeCycle: " + negativeCycle);
-        }
+        }*/
     }
 }
