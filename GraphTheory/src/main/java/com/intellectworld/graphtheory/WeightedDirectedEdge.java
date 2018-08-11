@@ -38,7 +38,7 @@ public class WeightedDirectedEdge implements Comparable<WeightedDirectedEdge> {
 
     @Override
     public String toString() {
-        return name + " - (" + vertex1 + "," + vertex2 + ") - " + weight;
+        return name + " (" +weight + ")";
     }
 
     @Override

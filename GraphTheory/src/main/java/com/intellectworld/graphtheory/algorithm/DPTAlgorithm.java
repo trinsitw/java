@@ -11,16 +11,11 @@ public class DPTAlgorithm implements CycleDetectionAlgorithm {
 
     private Set<List<WeightedDirectedEdge>> cycles;
 
-    public Set<List<WeightedDirectedEdge>> findCycles(WeightedDirectedGraph graph) {
+    public Set<List<WeightedDirectedEdge>> findCycles(WeightedDirectedGraph graph, Vertex vertex) {
         cycles = new HashSet<>();
-
         Set<Vertex> whiteVertices = graph.vertices().stream().collect(Collectors.toSet());
         Stack<Vertex> greyVertices = new Stack<>();
-
-        while (whiteVertices.size() > 0) {
-            Vertex vertex = whiteVertices.stream().findFirst().get();
-            dpt(vertex, graph.edges(), whiteVertices, greyVertices);
-        }
+        dpt(vertex, graph.edges(), whiteVertices, greyVertices);
         return cycles;
     }
 
@@ -30,24 +25,28 @@ public class DPTAlgorithm implements CycleDetectionAlgorithm {
             Set<Vertex> whiteVertices,
             Stack<Vertex> greyVertices)
     {
-        System.out.println("dpt(" + vertex + ")");
         whiteVertices.remove(vertex);
         greyVertices.push(vertex);
         Set<Vertex> neighborVertices = edges.stream().filter(edge -> edge.vertex1().equals(vertex))
                     .map(edge -> edge.vertex2()).collect(Collectors.toSet());
+
         Iterator neihborIterator = neighborVertices.iterator();
         while (neihborIterator.hasNext()) {
             Vertex neighborVertex = (Vertex) neihborIterator.next();
             if (whiteVertices.contains(neighborVertex)) {
-                dpt(neighborVertex, edges, whiteVertices, greyVertices);
+                dpt(neighborVertex, edges, new HashSet<>(whiteVertices), (Stack<Vertex>) greyVertices.clone());
             } else if (greyVertices.contains(neighborVertex)) {
-                cycles.add(getCycle(neighborVertex, edges, (Stack<Vertex>) greyVertices.clone()));
+                List<WeightedDirectedEdge> cycle = getCycle(neighborVertex, edges, (Stack<Vertex>) greyVertices.clone());
+                cycles.add(cycle);
             }
         }
-        greyVertices.remove(vertex);
-    }
+     }
 
-    List<WeightedDirectedEdge> getCycle(Vertex neighborVertex, Set<WeightedDirectedEdge> edges, Stack<Vertex> greyVertices) {
+    List<WeightedDirectedEdge> getCycle(
+            Vertex neighborVertex,
+            Set<WeightedDirectedEdge> edges,
+            Stack<Vertex> greyVertices)
+    {
         List<WeightedDirectedEdge> cycleEdges = new ArrayList<>();
         Vertex v1 = null;
         Vertex v2 = neighborVertex;
@@ -68,10 +67,5 @@ public class DPTAlgorithm implements CycleDetectionAlgorithm {
         }
         Collections.reverse(cycleEdges);
         return cycleEdges;
-    }
-
-    private void moveVertex(Vertex vertex, Collection source, Collection target) {
-        source.remove(vertex);
-        target.add(vertex);
     }
 }

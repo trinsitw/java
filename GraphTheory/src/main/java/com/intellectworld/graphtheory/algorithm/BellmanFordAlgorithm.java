@@ -26,7 +26,6 @@ public class BellmanFordAlgorithm implements  ShortestPathAlgorithm {
                 }
             }
         }
-        // Look for negative cycle.
         Map<Vertex, BigDecimal> newD = new HashMap<>(D);
         for (WeightedDirectedEdge edge : inputGraph.edges()) {
             if (newD.get(edge.vertex1()).add(edge.weight()).compareTo(newD.get(edge.vertex2())) < 0) {
