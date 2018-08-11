@@ -34,11 +34,11 @@ public class DPTAlgorithmTest {
         WeightedDirectedGraph graph = new WeightedDirectedGraph(vertices, edges);
         CycleDetectionAlgorithm cycleDetectionAlgorithm = new DPTAlgorithm();
         Set<List<WeightedDirectedEdge>> cycles = cycleDetectionAlgorithm.findCycles(graph, A);
-
         System.out.println("cycles " + cycles);
+
+        assertEquals(2, cycles.size());
         List<WeightedDirectedEdge> expected1 = Stream.of(BC, CD, DB).collect(Collectors.toList());
         List<WeightedDirectedEdge> expected2 = Stream.of(DB, BC, CD).collect(Collectors.toList());
-        assertEquals(2, cycles.size());
         assert(cycles.contains(expected1));
         assert(cycles.contains(expected2));
     }
@@ -62,9 +62,10 @@ public class DPTAlgorithmTest {
         CycleDetectionAlgorithm cycleDetectionAlgorithm = new DPTAlgorithm();
         Set<List<WeightedDirectedEdge>> cycles = cycleDetectionAlgorithm.findCycles(graph, A);
         System.out.println(cycles);
+
+        assertEquals(2, cycles.size());
         List<WeightedDirectedEdge> expected1 = Stream.of(AB, BC, CD, DA).collect(Collectors.toList());
         List<WeightedDirectedEdge> expected2 = Stream.of(AC, CD, DA).collect(Collectors.toList());
-        assertEquals(2, cycles.size());
         assert(cycles.contains(expected1));
         assert(cycles.contains(expected2));
     }
@@ -92,13 +93,65 @@ public class DPTAlgorithmTest {
         Set<List<WeightedDirectedEdge>> cycles = cycleDetectionAlgorithm.findCycles(graph, A);
         System.out.println(cycles);
 
+        assertEquals(3, cycles.size());
         List<WeightedDirectedEdge> expected1 = Stream.of(AB, BC, CD, DE, EA).collect(Collectors.toList());
         List<WeightedDirectedEdge> expected2 = Stream.of(AB, BC, CD, DA).collect(Collectors.toList());
         List<WeightedDirectedEdge> expected3 = Stream.of(AB, BC, CA).collect(Collectors.toList());
-        assertEquals(3, cycles.size());
         assert(cycles.contains(expected1));
         assert(cycles.contains(expected2));
         assert(cycles.contains(expected3));
+    }
+
+    @Test
+    public void findCyclesTest4() {
+        Vertex A = new Vertex("A");
+        Vertex B = new Vertex("B");
+        Set<Vertex> vertices = Stream.of(A, B).collect(Collectors.toSet());
+
+        WeightedDirectedEdge AB = new WeightedDirectedEdge("AB", A, B, 1);
+        WeightedDirectedEdge BA = new WeightedDirectedEdge("BA", B, A, 1);
+        Set<WeightedDirectedEdge> edges = Stream.of(AB, BA).collect(Collectors.toSet());
+
+        WeightedDirectedGraph graph = new WeightedDirectedGraph(vertices, edges);
+        CycleDetectionAlgorithm cycleDetectionAlgorithm = new DPTAlgorithm();
+        Set<List<WeightedDirectedEdge>> cycles = cycleDetectionAlgorithm.findCycles(graph, A);
+        System.out.println(cycles);
+
+        assertEquals(1, cycles.size());
+        List<WeightedDirectedEdge> expected1 = Stream.of(AB, BA).collect(Collectors.toList());
+        assert(cycles.contains(expected1));
+    }
+
+    @Test
+    public void findCyclesTest5() {
+        Vertex A = new Vertex("A");
+        Vertex B = new Vertex("B");
+        Vertex C = new Vertex("C");
+        Vertex D = new Vertex("D");
+        Set<Vertex> vertices = Stream.of(A, B, C, D).collect(Collectors.toSet());
+
+        WeightedDirectedEdge AB = new WeightedDirectedEdge("AB", A, B, 1);
+        WeightedDirectedEdge BA = new WeightedDirectedEdge("BA", B, A, 1);
+        WeightedDirectedEdge BC = new WeightedDirectedEdge("BC", B, C, 1);
+        WeightedDirectedEdge CA = new WeightedDirectedEdge("CA", C, A, 1);
+        WeightedDirectedEdge AD = new WeightedDirectedEdge("AD", A, D, 1);
+        WeightedDirectedEdge DB = new WeightedDirectedEdge("DB", D, B, 1);
+        Set<WeightedDirectedEdge> edges = Stream.of(AB, BA, BC, CA, AD, DB).collect(Collectors.toSet());
+
+        WeightedDirectedGraph graph = new WeightedDirectedGraph(vertices, edges);
+        CycleDetectionAlgorithm cycleDetectionAlgorithm = new DPTAlgorithm();
+        Set<List<WeightedDirectedEdge>> cycles = cycleDetectionAlgorithm.findCycles(graph, A);
+        System.out.println(cycles);
+
+        assertEquals(4, cycles.size());
+        List<WeightedDirectedEdge> expected1 = Stream.of(AB, BA).collect(Collectors.toList());
+        List<WeightedDirectedEdge> expected2 = Stream.of(AD, DB, BA).collect(Collectors.toList());
+        List<WeightedDirectedEdge> expected3 = Stream.of(AB, BC, CA).collect(Collectors.toList());
+        List<WeightedDirectedEdge> expected4 = Stream.of(AD, DB, BC, CA).collect(Collectors.toList());
+        assert(cycles.contains(expected1));
+        assert(cycles.contains(expected2));
+        assert(cycles.contains(expected3));
+        assert(cycles.contains(expected4));
     }
 
     @Test
