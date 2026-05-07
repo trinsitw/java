@@ -30,6 +30,7 @@ This program derives closed-form polynomial expressions in **exact rational arit
 This implementation accompanies a mathematical paper describing and proving the underlying recurrence formula.
 
 > 📄 **Accompanying Paper:** *A Recursive Identity for Power Sums: An Alternative to Faulhaber's Formula*
+> 
 > **Download:** https://github.com/trinsitw/java/blob/c232120048465a724279b5c746b3e86b75b06230/SigmaCalculator/src/main/java/com/trinwrite/AlternativeToFaulhaberFormula.pdf
 
 ---
