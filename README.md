@@ -35,6 +35,31 @@ This implementation accompanies a mathematical paper describing and proving the 
 
 ---
 
+### ExactPoly
+
+A standalone Java library for exact symbolic arithmetic on univariate and multivariate polynomials with rational coefficients. Originally developed as part of SigmaCalculator, the polynomial classes were extracted and packaged as a reusable, dependency-free library for use in any symbolic computation project.
+
+All polynomial coefficients are stored as exact rational numbers, ensuring no rounding error is introduced across recursive computations. The library's key capability is **polynomial composition** — substituting a variable with another polynomial and returning an exact symbolic result — which enables telescoping verification, recursive substitution, and change-of-variable transformations.
+
+**Key classes:**
+- `RationalNumber` — exact rational arithmetic backed by `BigInteger`; immutable, auto-reduced to lowest terms
+- `IndeterminateExponent` — a variable–exponent pair (e.g. `n²`), used as a building block for monomials
+- `MultivariateMonomial` — a rational-coefficient monomial in multiple indeterminates (e.g. `(3/2)·x²y³`); supports multiplication and canonical ordering
+- `MultivariatePolynomial` — multivariate polynomial algebra supporting addition, subtraction, multiplication, `pow`, numerical evaluation, and `compose()` for polynomial-into-polynomial substitution
+- `RationalPolynomial` — dense univariate polynomial supporting all arithmetic operations, evaluation via Horner's method, and exact polynomial long division
+
+**Build:** Maven (`pom.xml`, group `com.trinsitw`, artifact `exactpoly`, Java 8)
+
+**Tests:** JUnit 4 test suites for `RationalNumber`, `RationalPolynomial`, `MultivariateMonomial`, and `MultivariatePolynomial`
+
+This library accompanies a paper describing its architecture, design properties, and example applications.
+
+> 📄 **Accompanying Paper:** *ExactPoly: A Java Library for Exact Symbolic Polynomial Arithmetic over the Rationals*
+>
+> **Download:** https://github.com/trinsitw/java/blob/24e923a2ca65fce82f54aea458b8c6cf15cbc3c1/ExactPoly/src/main/java/com/trinsitw/exactpoly/ExactPoly.pdf
+
+---
+
 ### GraphTheory
 
 Graph theory algorithms and data structures implemented in Java, organized into two sub-packages: core algorithms and a forex arbitrage application.
@@ -84,7 +109,7 @@ The core identity used in SigmaCalculator is:
 
 $$\sum_{i=1}^{n} i^k = \left(\sum_{i=1}^{n}(2i-1)\right)\left(\sum_{i=1}^{n} i^{k-2}\right) - \sum_{i=1}^{n}\left((2i-1)\sum_{j=1}^{i}(j-1)^{k-2}\right)$$
 
-valid for positive integers $k \geq 2$ and $n \geq 1$. This recurrence allows the closed-form polynomial in $n$ for any power $k$ to be derived from lower-order cases, as an alternative to Faulhaber's formula.
+valid for positive integers $k \geq 2$ and $n \geq 1$. This recurrence allows the closed-form polynomial in $n$ for any power $k$ to be derived from lower-order cases, as an alternative to Faulhaber's formula. The derivation requires evaluating $S(k-2, i-1)$ — the polynomial for the lower-order sum with $n$ replaced by $i-1$ — which is performed via polynomial composition using ExactPoly's `compose()` method.
 
 The forex arbitrage detection in GraphTheory is based on the classical reduction: a profitable currency cycle exists if and only if a negative-weight cycle exists in a directed graph where each edge weight is $-\log(\text{exchange rate})$.
 
