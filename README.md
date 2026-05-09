@@ -41,6 +41,8 @@ A standalone Java library for exact symbolic arithmetic on univariate and multiv
 
 All polynomial coefficients are stored as exact rational numbers, ensuring no rounding error is introduced across recursive computations. The library's key capability is **polynomial composition** — substituting a variable with another polynomial and returning an exact symbolic result — which enables telescoping verification, recursive substitution, and change-of-variable transformations.
 
+ExactPoly is not designed for high-performance computation. The emphasis is on **clean design**, **comprehensibility**, and **pedagogical transparency**: each class models exactly one mathematical concept, the algebraic intent of every method is directly legible from its implementation, and the library can serve as a readable reference for anyone learning how symbolic polynomial arithmetic works from first principles. For performance-critical applications, libraries such as [Rings](https://github.com/PoslavskySV/rings) or [JAS](https://krum.rz.uni-mannheim.de/jas/) are more appropriate.
+
 **Key classes:**
 - `RationalNumber` — exact rational arithmetic backed by `BigInteger`; immutable, auto-reduced to lowest terms
 - `IndeterminateExponent` — a variable–exponent pair (e.g. `n²`), used as a building block for monomials
@@ -56,7 +58,7 @@ This library accompanies a paper describing its architecture, design properties,
 
 > 📄 **Accompanying Paper:** *ExactPoly: A Java Library for Exact Symbolic Polynomial Arithmetic over the Rationals*
 >
-> **Download:** https://github.com/trinsitw/java/blob/24e923a2ca65fce82f54aea458b8c6cf15cbc3c1/ExactPoly/src/main/java/com/trinsitw/exactpoly/ExactPoly.pdf
+> **Download:** https://github.com/trinsitw/java/blob/bd36c24b83f0436c8f6186d4ce5f6a0ee99b0567/ExactPoly/src/main/java/com/trinsitw/exactpoly/ExactPoly.pdf
 
 ---
 
