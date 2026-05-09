@@ -114,6 +114,15 @@ The library provides five core classes:
 No floating-point arithmetic is introduced at any stage.
 All intermediate and final results are exact.
 
+\textsc{ExactPoly} is not designed for high-performance computation.
+The emphasis is on \textbf{clean design}, \textbf{comprehensibility}, and
+\textbf{pedagogical transparency}: each class models exactly one mathematical
+concept, the algebraic intent of every method is directly legible from its
+implementation, and the library can serve as a readable reference for anyone
+learning how symbolic polynomial arithmetic works from first principles.
+For performance-critical applications, libraries such as
+Rings~\cite{poslavsky2019} or JAS~\cite{kredel2008} are more appropriate.
+
 %----------------------------------------------------------------------
 \section{Library Architecture}
 %----------------------------------------------------------------------
@@ -460,9 +469,12 @@ None of the libraries above were designed with this combination of constraints.
 \section{Limitations and Future Work}
 %----------------------------------------------------------------------
 
-The current implementation prioritises correctness and structural clarity over
-computational performance.
-Three directions for future development are noted.
+ExactPoly is intentionally designed for clarity over speed.
+This reflects a deliberate choice: the library's primary goals are clean
+design, comprehensibility, and pedagogical transparency, not throughput.
+Users who require high-performance polynomial arithmetic should consider
+Rings~\cite{poslavsky2019} or JAS~\cite{kredel2008}.
+Within this scope, three directions for future development are noted.
 
 \begin{enumerate}[noitemsep]
   \item \textit{Performance.}
@@ -488,7 +500,10 @@ Three directions for future development are noted.
 
 We have described \textsc{ExactPoly}, a Java library for exact symbolic
 polynomial arithmetic.
-Its design emphasises correctness, immutability, and canonical representation.
+Its design prioritises clean structure, comprehensibility, and pedagogical
+transparency over computational performance: each class models exactly one
+mathematical concept, all types are immutable, and canonical form is maintained
+by construction throughout.
 The library requires no external dependencies beyond the Java standard library,
 and has been used in practice to derive closed-form polynomial expressions for
 $S(k,n)$ for $k$ up to~100~\cite{trinsit2026}.
